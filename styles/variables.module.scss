@@ -1,0 +1,23 @@
+/* variables.module.scss */
+
+$logoO: #ff9900;
+$logoB: #006699;
+$textLabel: #0896ff;
+$bg-color: #fff4e5;
+$header-color: #ffd699;
+$footer-color: #ffd699;
+$body-font: 'Inconsolata', monospace;
+$feed-color: #ffd699;
+$filter-color:#ffd699;
+$accordion-color: #ffd699;
+
+
+$primary-color: #64FF00;
+
+:export {
+    bgcolor: $bg-color;
+    logoO: $logoO;
+    logoB: $logoB;
+    headercolor: $header-color;
+    footercolor: $footer-color;
+}

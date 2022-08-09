@@ -1,0 +1,27 @@
+Index
+    - header
+        - language
+        - login
+        - register
+    - body
+        - show pic 
+            - is it logged?
+                - yes -show public and private memeories
+                - no - show only public memories 
+        - remember? 
+            - yes or no
+            - show name
+        - summary
+            - pic shown
+            - pic remembered
+            - pic not remembered
+        - want to create your oun memories? == register
+
+- Login
+- Logout
+- Adm
+    - see new memories
+    - delete new memories - pornografia
+_ Privacy
+- User agreement
+
