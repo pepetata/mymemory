@@ -65,7 +65,7 @@ module.exports = class MyMemory {
           this.name,
           this.link,
           this.href,
-          this.privateMem,
+          this.private,
           this.id,
         ],
       });

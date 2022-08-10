@@ -45,12 +45,22 @@ const Index = (props) => {
   //const param =
 
   const pageContent = (
-    <>
+    <div className="text-center">
       <br />
       <br />
       <br />
-      <h1>Index.js</h1>
-    </>
+      <h1>Exercite sua Memória</h1>
+      <br />
+      <br />
+      <h2>Veja se você se lembra do que mostramos abaixo:</h2>
+      <p>{props.user.id} {"user" in props } x</p>
+      {! props.user?.id && (<p className="red fs-6 bold">Estamos apenas mostrando memórias gerais. Se quiser execricitar com suas próprias memórias, cadastre-se e faça o login!!</p>)}
+      
+      <br />
+      <br />
+      <br />
+
+    </div>
     // <>
     //   <br />
     //   <br />

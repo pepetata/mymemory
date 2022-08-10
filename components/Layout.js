@@ -1,5 +1,5 @@
 // components/layout.js
-import React, { Component } from "react";
+import React from "react";
 import Head from "next/head";
 
 import HeaderNav from "./HeaderNav";

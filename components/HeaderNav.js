@@ -195,6 +195,13 @@ const HeaderNav = (props) => {
               {group3 && <li className="nav-item pe-4 my-pt-4">
                 {userId ? <Logout /> : <Login />}
               </li> }
+              <li>
+              <Link href="/mymemory">
+                  <a>
+Minha Memória
+                  </a>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

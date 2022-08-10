@@ -1,44 +1,61 @@
-import { check, validationResult } from "express-validator";
-import initMiddleware from "../../../lib/init-middleware";
-import validateMiddleware from "../../../lib/validate-middleware";
+// import { body, validationResult } from "express-validator";
+// import validator from "validator";
+// import initMiddleware from "../../../lib/init-middleware";
+// import validateMiddleware from "../../../lib/validate-middleware";
 import MyMemory from "../../../models/mymemory";
 
-const validateBody = initMiddleware(
-  validateMiddleware(
-    [
-      check("data.privateMem").toBoolean(),
-      check("data.name")
-        .not()
-        .isEmpty()
-        .withMessage("O nome de sua memória não foi informado")
-        .trim()
-        .escape(),
-      check("data.link").trim().escape(),
-      check("data.href").trim().escape(),
-    ],
-    validationResult
-  )
-);
+// const validateBody = initMiddleware(
+//   validateMiddleware(
+//     [
+//       body("data.privateMem").toBoolean(),
+//       body("data.name")
+//         .not()
+//         .isEmpty()
+//         .withMessage("O nome de sua memória não foi informado")
+//         .trim()
+//         .toLowerCase()
+//         .escape(),
+
+//       body("data.link").custom((value, { req }) => {
+//         console.log("validating link");
+//         if (value == "") return true;
+//         if (value.isURL()) return value.trim();
+//         throw new Error("A senha precisa ter no mínimo 4 caracteres");
+//       }),
+//       // .not()
+//       // .isEmpty()
+//       // .isURL({ protocols: ["http", "https"] })
+//       // .withMessage("O endereço da foto não é válido.")
+//       // .trim(),
+//       body("data.href")
+//         .isEmpty()
+//         .isURL({ protocols: ["http", "https"] })
+//         .withMessage("O endereço da referência não é válido.")
+//         .trim(),
+//     ],
+//     validationResult
+//   )
+// );
 
 export default async function handler(req, res) {
   console.log("/api/mymemory/save  req.body=", req.body);
-  await validateBody(req, res);
+  // await validateBody(req, res);
 
-  const errors = validationResult(req);
-  console.log("/api/mymemory/save  errors=", errors);
-  if (!errors.isEmpty()) {
-    res.status(200).json({ errors: errors.array() });
-    return;
-  }
+  // const errors = validationResult(req);
+  // console.log("/api/mymemory/save  errors=", errors);
+  // if (!errors.isEmpty()) {
+  //   res.status(200).json({ errors: errors.array() });
+  //   return;
+  // }
 
   // save mymemory
   var id = req.body.data?.id;
   const mymemory = new MyMemory(
     id,
     req.body.data.name,
-    req.body.data.link,
-    req.body.data.href,
-    req.body.data.privateMem,
+    encodeURI(req.body.data.link),
+    encodeURI(req.body.data.href),
+    req.body.data.private,
     req.body.user.id
   );
 

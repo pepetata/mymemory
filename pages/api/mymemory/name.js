@@ -2,16 +2,10 @@ import { check, validationResult } from "express-validator";
 import initMiddleware from "../../../lib/init-middleware";
 import validateMiddleware from "../../../lib/validate-middleware";
 import MyMemory from "../../../models/mymemory";
+import { titleCase } from "../../../lib/common";
 
 const validateBody = initMiddleware(
-  validateMiddleware(
-    [
-      check("name")
-        .trim()
-        .escape(),
-    ],
-    validationResult
-  )
+  validateMiddleware([check("name").trim().escape()], validationResult)
 );
 
 export default async function handler(req, res) {
@@ -25,24 +19,27 @@ export default async function handler(req, res) {
     return;
   }
 
+  var mymemoryFound = await new MyMemory().findName(
+    req.body.name,
+    req.body.user
+  );
+  console.log("mymemory.findName", mymemoryFound);
 
-  var mymemoryFound  = await new MyMemory().findName(req.body.name,req.body.user);
-  console.log("mymemory.save", mymemoryFound);
-
-  const newMyMemory = new MyMemory(); 
-  console.log('newMyMemory',newMyMemory)
+  const newMyMemory = {};
+  console.log("newMyMemory", newMyMemory);
   // was there any error saving?
   if (mymemoryFound === -1 || mymemoryFound?.error === -1) {
-    mymemoryFound=newMyMemory
-  } else mymemoryFound = new MyMemory(
-    mymemoryFound.id,
-    mymemoryFound.name,
-    mymemoryFound.link,
-    mymemoryFound.href,
-    mymemoryFound.private,
-    mymemoryFound.user
-    )
-    console.log('mymemoryFound final',mymemoryFound)
+    mymemoryFound = newMyMemory;
+  } else
+    mymemoryFound = new MyMemory(
+      mymemoryFound.id,
+      titleCase(mymemoryFound.name),
+      decodeURI(mymemoryFound.link),
+      decodeURI(mymemoryFound.href),
+      mymemoryFound.private===1,
+      mymemoryFound.user
+    );
+  console.log("mymemoryFound final", mymemoryFound);
 
   res.status(200).send(mymemoryFound);
 }
