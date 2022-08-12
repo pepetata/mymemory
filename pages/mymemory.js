@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 // import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
@@ -37,6 +37,13 @@ const MyMemory = (props) => {
   const [showImg, SetShowImg] = useState(false);
   const [changed, setChanged] = useState(false);
   const [oldName, setOldName] = useState("");
+
+  console.log('MyMemory', props, props.user?.id>0)
+
+  useEffect(() => {
+    if (!props.user?.id > 0 ) router.push("/login?needlogin=true&r=/mymemory");
+    // console.log("Feed useEffect");
+  }, [props]);
 
   const displayErrorMsg = (val) => {
     if (val) SetShowError({ display: "block" });
@@ -90,7 +97,7 @@ const MyMemory = (props) => {
 
   const validateData = (mm) => {
     const errors = [];
-    console.log("saveMyMemory", mymemory, mm.name.trim() == "");
+    console.log("validateData", mymemory, mm.name.trim() == "");
     if (mm.name.trim() == "") {
       errors.push({ msg: "Informe o nome da memória." });
     }
@@ -114,8 +121,9 @@ const MyMemory = (props) => {
 
     return false;
   };
-
+  
   const saveMyMemory = async (event) => {
+    console.log('idRef.current.value   ====',idRef.current.value)
     if (event) event.preventDefault();
     displayErrorMsg(false);
     setShowMsg(false);
@@ -137,19 +145,20 @@ const MyMemory = (props) => {
       headers: { "Content-Type": "application/json" },
     });
     const json = await res.json();
+    console.log('idRef.current.value',idRef.current.value)
     if (json.errors) {
       setFormErrors(json.errors);
       SetShowError({ display: "block" });
     } else {
       SetShowError({ display: "none" });
       // save/update new user id
-      if (idRef.current.value) {
+      if (idRef.current.value > 0) {
         //update
         setFormMsgs([{ msg: "Seus dados foram alterados com sucesso." }]);
       } else {
         //idRef.current.value = json.id;
-        setMyMemory(...mymemory, json.id);
-        setFormMsgs([{ msg: "Sua memória foi gravada com sucesso." }]);
+        setMyMemory({...mymemory, id: json.id});
+        setFormMsgs([{ msg: "Sua nova memória foi gravada com sucesso." }]);
       }
       setShowMsg(true);
       await sleep(3);
@@ -218,9 +227,11 @@ const MyMemory = (props) => {
   };
 
   const ShowPicture = () => {
+    console.log('mymemory.link',mymemory.link)
+    if (mymemory.link == "") return "" 
+    else
     return (
       <div className="text-center">
-        {/* <br/> */}
         <p>A foto será mostrada aqui caso seja encontrada:</p>
         <picture>
           <img
@@ -285,7 +296,7 @@ const MyMemory = (props) => {
                 key="10"
               />
               <div className="mb-3">
-                <label className="form-label">Nome</label>
+                <label className="form-label">Resposta</label>
                 <input
                   key="11"
                   type="text"
@@ -296,6 +307,18 @@ const MyMemory = (props) => {
                   className="form-control form-control-sm"
                   onChange={handleChange}
                   onBlur={findName}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Texto</label>
+                <input
+                  key="110"
+                  type="text"
+                  id="text"
+                  value={mymemory.text}
+                  maxLength="150"
+                  className="form-control form-control-sm"
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-3">

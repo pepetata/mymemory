@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import cancel from "../images/user.png";
 
 // nao vou usar o react-bootstrap pois o rendering é feito no cliente
 // vou usar SSR - Server SIde Rendering e Static-site Generation (SSG) qdo possivel
@@ -112,14 +113,24 @@ const Footer = (props) => {
               </div>
               <div className="row footerLine">
                 <Link href="/howworks">
-                  <a>Como usar</a>
+                  <a>Como Usar</a>
                 </Link>
               </div>
-              {/* <div className="row footerLine">
-                <Link href="/ouridols">
-                  <a>Nossos Ídolos</a>
+              <div className="row footerLine">
+                <Link href="/howsignup">
+                  <a>Como se Cadastrar</a>
                 </Link>
-              </div> */}
+              </div>
+              <div className="row footerLine">
+                <Link href="/howsignin">
+                  <a>Como se Registrar</a>
+                </Link>
+              </div>
+              <div className="row footerLine">
+                <Link href="/howmemory">
+                  <a>Como Cadastrar Memória</a>
+                </Link>
+              </div>
               <div className="row footerLine">
                 <Link href="/privacy">
                   <a>Política de Privacidade</a>
@@ -132,7 +143,9 @@ const Footer = (props) => {
               <hr id="footerHRContact" className="footerHr"></hr>
               <div className="row footerContact">
                 <p>
-                  <span className="blue">Fale com a Equipe do Memoria Test</span>
+                  <span className="blue">
+                    Fale com a Equipe do Memoria Test
+                  </span>
                 </p>
               </div>
 

@@ -1,52 +1,52 @@
-// import { body, validationResult } from "express-validator";
-// import validator from "validator";
-// import initMiddleware from "../../../lib/init-middleware";
-// import validateMiddleware from "../../../lib/validate-middleware";
+import { body, validationResult } from "express-validator";
+import validator from "validator";
+import initMiddleware from "../../../lib/init-middleware";
+import validateMiddleware from "../../../lib/validate-middleware";
 import MyMemory from "../../../models/mymemory";
 
-// const validateBody = initMiddleware(
-//   validateMiddleware(
-//     [
-//       body("data.privateMem").toBoolean(),
-//       body("data.name")
-//         .not()
-//         .isEmpty()
-//         .withMessage("O nome de sua memória não foi informado")
-//         .trim()
-//         .toLowerCase()
-//         .escape(),
+const validateBody = initMiddleware(
+  validateMiddleware(
+    [
+      body("data.privateMem").toBoolean(),
+      body("data.name")
+        .not()
+        .isEmpty()
+        .withMessage("O nome de sua memória não foi informado")
+        .trim()
+        .toLowerCase()
+        .escape(),
 
-//       body("data.link").custom((value, { req }) => {
-//         console.log("validating link");
-//         if (value == "") return true;
-//         if (value.isURL()) return value.trim();
-//         throw new Error("A senha precisa ter no mínimo 4 caracteres");
-//       }),
-//       // .not()
-//       // .isEmpty()
-//       // .isURL({ protocols: ["http", "https"] })
-//       // .withMessage("O endereço da foto não é válido.")
-//       // .trim(),
-//       body("data.href")
-//         .isEmpty()
-//         .isURL({ protocols: ["http", "https"] })
-//         .withMessage("O endereço da referência não é válido.")
-//         .trim(),
-//     ],
-//     validationResult
-//   )
-// );
+      body("data.link").custom((value, { req }) => {
+        console.log("validating link");
+        if (value == "") return true;
+        if (value.isURL()) return value.trim();
+        throw new Error("A senha precisa ter no mínimo 4 caracteres");
+      }),
+      // .not()
+      // .isEmpty()
+      // .isURL({ protocols: ["http", "https"] })
+      // .withMessage("O endereço da foto não é válido.")
+      // .trim(),
+      body("data.href")
+        .isEmpty()
+        .isURL({ protocols: ["http", "https"] })
+        .withMessage("O endereço da referência não é válido.")
+        .trim(),
+    ],
+    validationResult
+  )
+);
 
 export default async function handler(req, res) {
   console.log("/api/mymemory/save  req.body=", req.body);
-  // await validateBody(req, res);
+  await validateBody(req, res);
 
-  // const errors = validationResult(req);
-  // console.log("/api/mymemory/save  errors=", errors);
-  // if (!errors.isEmpty()) {
-  //   res.status(200).json({ errors: errors.array() });
-  //   return;
-  // }
+  const errors = validationResult(req);
+  console.log("/api/mymemory/save  errors=", errors);
+  if (!errors.isEmpty()) {
+    res.status(200).json({ errors: errors.array() });
+    return;
+  }
 
   // save mymemory
   var id = req.body.data?.id;
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     req.body.user.id
   );
 
-  console.log("x------------", req.body.data, mymemory);
+  // console.log("x------------", req.body.data, mymemory);
 
   // check if the email is already in db -- not if user exists and is not changing email
   // if (! id) {
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
   } else {
     mymemoryId = await mymemory.update();
   }
-  console.log("mymemory.save", mymemoryId);
+  // console.log("mymemory.save", mymemoryId);
 
   // was there any error saving?
   if (mymemoryId === -1 || mymemoryId?.error === -1) {

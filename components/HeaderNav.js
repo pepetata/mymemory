@@ -3,17 +3,20 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Iron from "@hapi/iron";
+import { removeTokenCookie } from "../lib/auth-cookies";
 
-import logo from "../images/logobig150.png";
+import SignupButton from "../containers/SignupButton";
+
+import logo from "../images/logobig250.png";
 import home35 from "../images/home35.png";
-import registrar from "../images/registrar.png";
+// import registrar from "../images/signup.png";
 import changeUser from "../images/user.png";
 import sair from "../images/logout.png";
-import entrar from "../images/entrar.png";
-import server from "../common/server";
+import newmemory from "../images/newmemory.png";
 
 // header groups:
-// 1- news - only if logged
+// 1- create memory - only if logged
 // 2- register (not logged) or change user (logged)
 // 3- login (not logged) or logout (logged)
 //
@@ -24,6 +27,8 @@ import server from "../common/server";
 //import {Navbar, Container, Nav, NavDropdown, Image } from 'react-bootstrap';
 
 import variables from "../styles/variables.module.scss";
+import SigninButton from "../containers/SigninButton";
+import NewMemoryButton from "../containers/NewMemoryButton";
 //
 const HeaderNav = (props) => {
   // const [cookies, setCookie, removeCookie] = useCookies(["midu", "midt"]);
@@ -36,28 +41,26 @@ const HeaderNav = (props) => {
   // console.log("HeaderNav", props);
   // console.log("HeaderNav userId", userId);
   useEffect(() => {
-    // console.log("He aderNav useEffect");
+    console.log("HeaderNav useEffect", userId, props,window.location.pathname);
     import("bootstrap/dist/js/bootstrap.min");
-  }, []);
+  }, [props]);
 
-  const Hide = { display: "none" };
-  const Show = { display: "block" };
+  // const Hide = { display: "none" };
+  // const Show = { display: "block" };
+
+  const NewMemory = (props) => {
+    return (
+      <Link href="/mymemory">
+        <NewMemoryButton />
+      </Link>
+    );
+  };
 
   const Register = (props) => {
     return (
       <Link href="/user">
-        {/* <a style={props.show ? Show : Hide}> */}
         <a>
-          <Image
-            src={registrar}
-            className="imgButton"
-            width={92}
-            height={50}
-            alt="Registre-se"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            title="Clique para se registrar e usufruir de nossa aplicação."
-          />
+          <SignupButton />
         </a>
       </Link>
     );
@@ -103,37 +106,38 @@ const HeaderNav = (props) => {
     return (
       <Link href="/login">
         <a>
+          <SigninButton />
+        </a>
+        {/* <a>
           <Image
             src={entrar}
             className="imgButton"
-            width={89}
-            height={49}
+            width={109}
+            height={46}
             alt="Entrar no Sistema"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Clique para entrar na aplicação e ver as notícias de seus ídolos."
           />
-        </a>
+        </a> */}
       </Link>
     );
   };
 
-
-  const logout = (event) => {
+  const logout =  (event) => {
     if (event) event.preventDefault();
     let logout = confirm("Você realmente deseja sair da aplicação?");
     if (!logout) return;
 
-    fetch("api/logout", {
+    fetch("/api/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
-      .then((json) => {
+      .then( async (json) => {
         console.log(json);
-        // removeCookie("midu");
-        // removeCookie("midt");
         setUserId(0);
+        router.reload(window.location.pathname)
         // router.push("/");
       });
   };
@@ -147,7 +151,7 @@ const HeaderNav = (props) => {
         <div className="container-fluid">
           <Link href="/">
             <a>
-              <Image src={logo} alt="Logo" width={150} height={30} />
+              <Image src={logo} alt="Logo" width={250} height={49} />
             </a>
           </Link>
 
@@ -163,7 +167,6 @@ const HeaderNav = (props) => {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-
           <div id="navbar" className="collapse navbar-collapse">
             {/* <ul className="nav navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
@@ -171,13 +174,16 @@ const HeaderNav = (props) => {
               </li>
             </ul> */}
             <ul className="nav navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item pe-4 my-pt-4">
+              <li
+                className="nav-item pe-4 my-pt-4"
+                style={{ marginTop: "13px" }}
+              >
                 <Link href="/">
                   <a>
                     <Image
                       src={home35}
                       className="imgButton"
-                      alt="Logo"
+                      alt="Home"
                       width={35}
                       height={35}
                       data-bs-toggle="tooltip"
@@ -187,21 +193,49 @@ const HeaderNav = (props) => {
                   </a>
                 </Link>
               </li>
+              {group1 && (
+                <li className="nav-item pe-4 my-pt-4">
+                  <Link href="/mymemory">
+                    <a>
+                      <NewMemoryButton />
+                    </a>
+                  </Link>
+                </li>
+              )}
 
-              {group2 && (<li className="nav-item pe-4 my-pt-4">
-                {userId ? <ChangeUser /> : <Register />}
-              </li>)}
+              {group2 && (
+                <>
+                  {userId ? (
+                    <li className="nav-item pe-4 my-pt-4"  style={{ marginTop: "13px" }}>
+                      <ChangeUser />
+                    </li>
+                  ) : (
+                    <li className="nav-item pe-4 my-pt-4">
+                      <Register />
+                    </li>
+                  )}
+                </>
+              )}
 
-              {group3 && <li className="nav-item pe-4 my-pt-4">
-                {userId ? <Logout /> : <Login />}
-              </li> }
-              <li>
-              <Link href="/mymemory">
-                  <a>
-Minha Memória
-                  </a>
-                </Link>
-              </li>
+              {group3 && (
+                <>
+                  {userId ? (
+                    <li className="nav-item pe-4 my-pt-4"  style={{ marginTop: "13px" }}>
+                      <Logout />
+                    </li>
+                  ) : (
+                    <li className="nav-item pe-4 my-pt-4">
+                      <Login />
+                    </li>
+                  )}
+                </>
+              )}
+
+              {/* {group3 && (
+                <li className="nav-item pe-4 my-pt-4">
+                  {userId ? <Logout /> : <Login />}
+                </li>
+              )} */}
             </ul>
           </div>
         </div>
@@ -278,12 +312,14 @@ Minha Memória
 
         @media only screen and (max-device-width: 576px) {
           .my-pt-4 {
-            margin-top: 1.5rem!important;
+            margin-top: 1.5rem !important;
           }
 
-          {/* #navbar {
+           {
+            /* #navbar {
             background-color: #f2dc82;
-          } */}
+          } */
+          }
 
           #navbar > ul > li {
             height: 50px;

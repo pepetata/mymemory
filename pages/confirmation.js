@@ -4,6 +4,7 @@ import Image from "next/image";
 import Layout from "../components/Layout";
 import entrar from "../images/entrar.png";
 import menu from "../images/menu.png";
+import SigninButton from "../containers/SigninButton";
 const server = process.env.SERVER
 
 const Confirmation = (props) => {
@@ -61,48 +62,7 @@ const Confirmation = (props) => {
         <br />
         <br />
           <div className="red strong"> {/* TODO  mudar o texto*/}
-        <h3 className="h5 blue">Para ver as notícias de seus ídolos:</h3>
-        <ul>
-          <li>
-            Clique acima no botao&nbsp;
-            <Image
-              src={entrar}
-              className="imgButton"
-              width={89}
-              height={49}
-              alt="Entrar no Sistema"
-            />
-          </li>
-          <li>
-            Note que o botão acima pode estar escondido dependendo de seu
-            equipamento. Nesse caso, para vê-lo, clique no botão&nbsp;
-            <Image
-              src={menu}
-              className="imgButton"
-              width={89}
-              height={47}
-              alt="Menu"
-            />
-          </li>
-          <li>
-            Digite seu email e senha. Depois clique no botão&nbsp;
-            <button className="btn btn-warning otbutton mt-2">Login</button>
-          </li>
-          <li>
-            No seu primeiro acesso, o sistema vai pedir os ídolos que você quer
-            acompanhar.
-          </li>
-          <li>Informe-os e veja as notícias, vídeos e fotos de seus ídolos.</li>{" "}
-          <br />{" "}
-          <li className="royalblue">
-            <strong>Obs.:</strong> Caso tenha dúvida de como usar nosso sistema,
-            clique no acesso&nbsp;
-            <Link href="/howworks">
-              <a>Como usar</a>
-            </Link>{" "}
-            no final de cada página do sistema.
-          </li>
-        </ul>
+  
           </div>
       </div>
     );

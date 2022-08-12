@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     req.body.name,
     req.body.user
   );
-  console.log("mymemory.findName", mymemoryFound);
+  // console.log("mymemory.findName", mymemoryFound);
 
   const newMyMemory = {};
   console.log("newMyMemory", newMyMemory);
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
     mymemoryFound = new MyMemory(
       mymemoryFound.id,
       titleCase(mymemoryFound.name),
+      mymemoryFound.text,
       decodeURI(mymemoryFound.link),
       decodeURI(mymemoryFound.href),
       mymemoryFound.private===1,

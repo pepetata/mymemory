@@ -20,13 +20,12 @@ const Login = (props) => {
   const [formErrors, setFormErrors] = useState(null);
   const emailRef = useRef(null);
   const pwRef = useRef(null);
-  const { needlogin } = router.query;
-  const { timeout } = router.query;
+  const { needlogin , timeout, r} = router.query;
   // useUser()
 
-  // useEffect(() => {
-  //   console.log("login - dentro do useEffect", needlogin, timeout);
-  // }, []);
+  useEffect(() => {
+    console.log("login - dentro do useEffect", needlogin, timeout, r, router.query);
+  }, [props]);
 
   const tooglePW = (event) => {
     event.preventDefault();
@@ -67,12 +66,8 @@ const Login = (props) => {
         displayErrorMsg(true, json.errors);
       } else {
         // save user
-        // setCookie("midu", JSON.stringify(json.user), {path: "/"});
-        // setCookie("midt", json.token, {path: "/"});
-        // console.log('cookie u', cookies.midu)
-        // console.log('cookie u email', cookies.midu.email)
-        // console.log('cookie t', cookies.midt)
-        router.push("/");
+        // route to destination (r) or to home
+        router.push(r? r:"/");
       }
     } catch (error) {
       console.error("An unexpected error occurred:", error);
