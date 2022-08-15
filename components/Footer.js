@@ -13,7 +13,7 @@ import SendButton from "../containers/SendButton";
 import server from "../common/server";
 //
 const Footer = (props) => {
-  const [contact, SetContact] = useState({});
+  const [contact, SetContact] = useState({nameContactUs:"",emailContactUs:"",commentContactUs:""});
   const [sending, SetSending] = useState(false);
   const [sent, SetSent] = useState(false);
 
@@ -45,7 +45,7 @@ const Footer = (props) => {
       text: contact.commentContactUs,
     };
 
-    fetch(server + "/about/sendContact", {
+    fetch(server + "/api/sendContact", {
       method: "POST",
       body: JSON.stringify(dataUser),
       headers: { "Content-Type": "application/json" },

@@ -335,6 +335,7 @@ const Index = (props) => {
   const TableMobile = () => {   return (
     <div  className="text-start">
         <table style={{ margin: "0 auto", tableLayout: "fixed"}}>
+        <tbody>
           <tr>
             <td style={{width: "130px" }} >Mostrados: </td>
             <td style={{width: "50px" }} >{except.length - 1}</td>
@@ -382,6 +383,7 @@ const Index = (props) => {
             </td>
           </tr>              
           )}
+          </tbody>
         </table>
         </div>
       )}

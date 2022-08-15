@@ -1,5 +1,3 @@
-- mover a validacao de campo para o api do user e do mymemory
 - importar dados
-- email do footer
 - ver no celular
 - celular- menu nao esta ok
