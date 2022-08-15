@@ -38,7 +38,8 @@ export default async function handler(req, res) {
       decodeURI(mymemoryFound.link),
       decodeURI(mymemoryFound.href),
       mymemoryFound.private===1,
-      mymemoryFound.user
+      mymemoryFound.user,
+      mymemoryFound.picture
     );
   console.log("mymemoryFound final", mymemoryFound);
 

@@ -1,8 +1,15 @@
 import { body, validationResult } from "express-validator";
-import validator from "validator";
+// import validator from "validator";
+import { rename } from "node:fs";
+import path from "node:path";
 import initMiddleware from "../../../lib/init-middleware";
 import validateMiddleware from "../../../lib/validate-middleware";
 import MyMemory from "../../../models/mymemory";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const validateBody = initMiddleware(
   validateMiddleware(
@@ -15,23 +22,30 @@ const validateBody = initMiddleware(
         .trim()
         .toLowerCase()
         .escape(),
-
-      body("data.link").custom((value, { req }) => {
-        console.log("validating link");
-        if (value == "") return true;
-        if (value.isURL()) return value.trim();
-        throw new Error("A senha precisa ter no mínimo 4 caracteres");
-      }),
+      body("data.texto").trim().toLowerCase().escape(),
+      body("data.link").if((value, { req }) => req.body.data.link)
+      .isURL({ protocols: ["http", "https"] })
+      .withMessage("O endereço da foto da internet não é válido."),
+      body("data.href").if((value, { req }) => req.body.data.href)
+      .isURL({ protocols: ["http", "https"] })
+      .withMessage("O endereço da referência não é válido."),
+      // body("data.link").custom((value, { req }) => {
+      //   console.log("validating link");
+      //   if (value == "") return true;
+      //   if (value.isURL()) return value.trim();
+      //   throw new Error("O endereço da Foto na Internet não é válido.");
+      // }),
       // .not()
       // .isEmpty()
       // .isURL({ protocols: ["http", "https"] })
       // .withMessage("O endereço da foto não é válido.")
       // .trim(),
-      body("data.href")
-        .isEmpty()
-        .isURL({ protocols: ["http", "https"] })
-        .withMessage("O endereço da referência não é válido.")
-        .trim(),
+      // body("data.href").custom((value, { req }) => {
+      //   console.log("validating href");
+      //   if (value == "") return true;
+      //   if (value.isURL()) return value.trim();
+      //   throw new Error("O endereço da referência não é válido.");
+      // }),
     ],
     validationResult
   )
@@ -48,18 +62,31 @@ export default async function handler(req, res) {
     return;
   }
 
+  // move picture from folder tempFiles to userFiles
+  const tempFile = req.body.data.newImage;
+  const userFile = tempFile.replace("tempFiles", "userFiles");
+  const folder = `${__dirname}${path.sep}..${path.sep}..${path.sep}..${path.sep}public`;
+  // console.log('----------------------', tempFile, userFile, __dirname, folder)
+
+  rename(folder + tempFile, folder + userFile, (err) => {
+    if (err) throw err;
+    console.log("Rename complete!");
+  });
+
   // save mymemory
   var id = req.body.data?.id;
   const mymemory = new MyMemory(
     id,
     req.body.data.name,
+    req.body.data.text,
     encodeURI(req.body.data.link),
     encodeURI(req.body.data.href),
     req.body.data.private,
-    req.body.user.id
+    req.body.user.id,
+    userFile
   );
 
-  // console.log("x------------", req.body.data, mymemory);
+  console.log("x------------", req.body.data, mymemory);
 
   // check if the email is already in db -- not if user exists and is not changing email
   // if (! id) {

@@ -3,7 +3,7 @@
 import con from "../lib/dbconnection";
 
 module.exports = class MyMemory {
-  constructor(id, name, text, link, href, privateMem, user) {
+  constructor(id, name, text, link, href, privateMem, user,picture) {
     this.id = id;
     this.name = name;
     this.text = text;
@@ -11,6 +11,7 @@ module.exports = class MyMemory {
     this.href = href;
     this.private = privateMem;
     this.user = user;
+    this.picture = picture
   }
 
   async hide(id, user) {
@@ -116,8 +117,8 @@ module.exports = class MyMemory {
     try {
       const res = await con({
         query:
-          "INSERT INTO mymemories (`name`,`text`,`link`,`href`,`private`,  `user`, `created`, `status`) VALUES (?,?,?,?,?,?,now(),'0')",
-        values: [this.name, this.text, this.link, this.href, this.private, this.user],
+          "INSERT INTO mymemories (`name`,`text`,`link`,`href`,`private`,  `user`, picture, `created`, `status`) VALUES (?,?,?,?,?,?,?,now(),'0')",
+        values: [this.name, this.text, this.link, this.href, this.private, this.user, this.picture],
       });
       // console.log("save MyMemory res=", res);
       console.log("MyMemory " + res.insertId + " added.", this.name);
@@ -133,10 +134,10 @@ module.exports = class MyMemory {
     try {
       const res = await con({
         query:
-          "UPDATE mymemories SET  `name` = ?, `text` = ?, `link` = ?,  `href` = ?, `private` = ? WHERE id =?",
-        values: [this.name, this.text, this.link, this.href, this.private, this.id],
+          "UPDATE mymemories SET  `name` = ?, `text` = ?, `link` = ?,  `href` = ?, `private` = ?, `picture` = ? WHERE id =?",
+        values: [this.name, this.text, this.link, this.href, this.private, this.picture, this.id],
       });
-      console.log("MyMemory " + this.id + " updated.", this.name);
+      console.log("MyMemory " + this.id + " updated.", this.name, this);
       return this.id;
     } catch (error) {
       console.log("MyMemory update error =", this.id, this.name);

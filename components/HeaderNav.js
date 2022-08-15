@@ -50,9 +50,9 @@ const HeaderNav = (props) => {
 
   const NewMemory = (props) => {
     return (
-      <Link href="/mymemory">
+      <a onClick={myMemory}>
         <NewMemoryButton />
-      </Link>
+      </a>
     );
   };
 
@@ -122,6 +122,14 @@ const HeaderNav = (props) => {
         </a> */}
       </Link>
     );
+  };
+
+  const myMemory =  (event) => {
+    if (event) event.preventDefault();
+    if (userId)
+    router.push("/mymemory");
+    else router.push("/login?needlogin=true&r=/mymemory");
+
   };
 
   const logout =  (event) => {

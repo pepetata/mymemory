@@ -1,3 +1,5 @@
 - importar dados
 - ver no celular
 - celular- menu nao esta ok
+- incluir foto por arquivo
+- PROBLEMA - ImageMagic - como instalar no servidor?

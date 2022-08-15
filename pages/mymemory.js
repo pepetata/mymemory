@@ -33,15 +33,16 @@ const MyMemory = (props) => {
   const [formMsgs, setFormMsgs] = useState(null);
   const router = useRouter();
   const idRef = useRef(null);
-  const nameRef = useRef(null);
   const [showImg, SetShowImg] = useState(false);
   const [changed, setChanged] = useState(false);
   const [oldName, setOldName] = useState("");
+  const [myFile, setMyFile] = useState({ selectedFile: null });
+  const [newImage, setNewImage] = useState(mymemory.picture? mymemory.picture: "");
 
-  console.log('MyMemory', props, props.user?.id>0)
+  console.log("MyMemory", props, props.user?.id > 0);
 
   useEffect(() => {
-    if (!props.user?.id > 0 ) router.push("/login?needlogin=true&r=/mymemory");
+    if (!props.user?.id > 0) router.push("/login?needlogin=true&r=/mymemory");
     // console.log("Feed useEffect");
   }, [props]);
 
@@ -121,9 +122,9 @@ const MyMemory = (props) => {
 
     return false;
   };
-  
+
   const saveMyMemory = async (event) => {
-    console.log('idRef.current.value   ====',idRef.current.value)
+    console.log("idRef.current.value   ====", idRef.current.value);
     if (event) event.preventDefault();
     displayErrorMsg(false);
     setShowMsg(false);
@@ -134,6 +135,7 @@ const MyMemory = (props) => {
 
     // sanitize inputs
     mm.name = titleCase(mm.name.trim());
+    mm.newImage =  newImage
     validator.escape(mm.name.trim());
     // mm.link=encodeURI(mm.link)
     // mm.href=encodeURI(mm.href)
@@ -145,7 +147,7 @@ const MyMemory = (props) => {
       headers: { "Content-Type": "application/json" },
     });
     const json = await res.json();
-    console.log('idRef.current.value',idRef.current.value)
+    console.log("idRef.current.value", idRef.current.value);
     if (json.errors) {
       setFormErrors(json.errors);
       SetShowError({ display: "block" });
@@ -157,7 +159,7 @@ const MyMemory = (props) => {
         setFormMsgs([{ msg: "Seus dados foram alterados com sucesso." }]);
       } else {
         //idRef.current.value = json.id;
-        setMyMemory({...mymemory, id: json.id});
+        setMyMemory({ ...mymemory, id: json.id });
         setFormMsgs([{ msg: "Sua nova memória foi gravada com sucesso." }]);
       }
       setShowMsg(true);
@@ -183,6 +185,7 @@ const MyMemory = (props) => {
     if ("id" in json) {
       console.log("achou a memoria", json);
       setMyMemory(json);
+      setNewImage(json.picture)
     }
   };
 
@@ -226,40 +229,124 @@ const MyMemory = (props) => {
     }
   };
 
+  // On file select (from the pop up)
+  const onFileChange = (event) => {
+    // Update the state
+    setMyFile({ selectedFile: event.target.files[0] });
+    onFileUpload(event.target.files[0]);
+  };
+
+  // On file upload (click the upload button)
+  const onFileUpload = async (file) => {
+    console.log("onFileUpload  =myFile.selectedFile", myFile.selectedFile);
+    // Create an object of formData
+    const formData = new FormData();
+    // formData.append("data", JSON.stringify(content));
+    // formData.append("profile_picture", e.target.files[0]);
+    // Update the formData object
+    formData.append("myFile", file);
+    formData.append("user", JSON.stringify(props.user.id));
+
+    // Details of the uploaded file
+
+    try {
+      // Request made to the backend api
+      // Send formData object
+      const res = await fetch("/api/mymemory/file", {
+        method: "PUT",
+        body: formData,
+        // headers: { "Content-Type": "multipart/form-data" },
+      });
+      const json = await res.json();
+      console.log(
+        "onFileUpload res==========================",
+        json.result.file
+      );
+      setNewImage(json.result.file);
+      // if (json.errors) {
+      //   setFormErrors(json.errors);
+      //   SetShowError({ display: "block" });
+      // } else {
+      //   SetShowError({ display: "none" });
+      //   // save/update new user id
+      //   if (idRef.current.value > 0) {
+      //     //update
+      //     setFormMsgs([{ msg: "Seus dados foram alterados com sucesso." }]);
+      //   } else {
+      //     //idRef.current.value = json.id;
+      //     setMyMemory({ ...mymemory, id: json.id });
+      //     setFormMsgs([{ msg: "Sua nova memória foi gravada com sucesso." }]);
+      //   }
+      //   setShowMsg(true);
+      //   await sleep(3);
+      //   setShowMsg(false);
+      //   setChanged(false);
+      // }
+    } catch (error) {
+      console.log("onFileChange error", error);
+    }
+  };
+
   const ShowPicture = () => {
-    console.log('mymemory.link',mymemory.link)
-    if (mymemory.link == "") return "" 
+    console.log("mymemory.link", mymemory.link);
+    if (mymemory.link == "") return "";
     else
-    return (
-      <div className="text-center">
-        <p>A foto será mostrada aqui caso seja encontrada:</p>
-        <picture>
-          <img
-            src={mymemory.link || "/images/logobig.png"}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/images/logobig.png";
-            }}
-            // onError={SetShowImg(false)}
-            // onError={e => {
-            //   console.log(e.onerror)
-            //   // "this.onerror=null;this.src='http:localhost:3000/images/logobig.png'"
-            // }}
-            className="img-fluid"
-            alt="Foto"
-            width={300}
-            height={200}
-          />
-        </picture>
-        <br />
-        <br />
-        <br />
-      </div>
-    );
+      return (
+        <div className="text-center">
+          <p>A foto será mostrada aqui caso seja encontrada:</p>
+          <picture>
+            <img
+              src={mymemory.link || "/images/logobig.png"}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/logobig.png";
+              }}
+              // onError={SetShowImg(false)}
+              // onError={e => {
+              //   console.log(e.onerror)
+              //   // "this.onerror=null;this.src='http:localhost:3000/images/logobig.png'"
+              // }}
+              className="img-fluid"
+              alt="Foto"
+              width={300}
+              height={200}
+            />
+          </picture>
+          <br />
+          <br />
+          <br />
+        </div>
+      );
+  };
+
+  const ShowLocalPicture = () => {
+    console.log("ShowLocalPicture", mymemory.picture);
+    if (! mymemory.picture && ! newImage) return "";
+    else
+      return (
+        <div className="text-center">
+          <picture>
+            <img
+              src={(newImage ? newImage : mymemory.picture)}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/logobig.png";
+              }}
+              className="img-fluid"
+              alt="Foto"
+              width={300}
+              height={200}
+            />
+          </picture>
+          <br />
+          <br />
+          <br />
+        </div>
+      );
   };
 
   const ShowRef = () => {
-    if (mymemory.href)
+    if (mymemory.href && mymemory.href.search('http://') > -1)
       return (
         <div className="text-center">
           <br />
@@ -274,165 +361,191 @@ const MyMemory = (props) => {
   };
 
   const MyMemoryContent = (
-      <div id="userDiv" className="container">
-        <div className="row">
-          <div className="col-lg-2 col-xs-0"></div>
-          <div className="col-lg-8 col-xs-12">
-            <br />
-            <br />
-            {/* <h1 className="h4">Informe seus dados:</h1>
+    <div id="userDiv" className="container">
+      <div className="row">
+        <div className="col-lg-2 col-xs-0"></div>
+        <div className="col-lg-8 col-xs-12">
+          <br />
+          <br />
+          {/* <h1 className="h4">Informe seus dados:</h1>
           <br /> */}
 
-            {/* {error ? ShowError : DontShowError} */}
+          {/* {error ? ShowError : DontShowError} */}
 
-            <form id="myForm">
+          <form id="myForm">
+            <input
+              type="text"
+              ref={idRef}
+              id="id"
+              value={mymemory.id}
+              className="d-none"
+              onChange={handleChange}
+              key="10"
+            />
+            <div className="mb-3">
+              <label className="form-label">Resposta</label>
               <input
+                key="11"
                 type="text"
-                ref={idRef}
-                id="id"
-                value={mymemory.id}
-                className="d-none"
+                id="name"
+                value={mymemory.name}
+                required
+                maxLength="100"
+                className="form-control form-control-sm"
                 onChange={handleChange}
-                key="10"
+                onBlur={findName}
               />
-              <div className="mb-3">
-                <label className="form-label">Resposta</label>
-                <input
-                  key="11"
-                  type="text"
-                  id="name"
-                  value={mymemory.name}
-                  required
-                  maxLength="100"
-                  className="form-control form-control-sm"
-                  onChange={handleChange}
-                  onBlur={findName}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Texto</label>
-                <input
-                  key="110"
-                  type="text"
-                  id="text"
-                  value={mymemory.text}
-                  maxLength="150"
-                  className="form-control form-control-sm"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Foto</label>
-                <input
-                  key="12"
-                  type="text"
-                  id="link"
-                  ref={nameRef}
-                  value={mymemory.link}
-                  required=""
-                  aria-describedby="link_Help"
-                  maxLength="250"
-                  className="form-control form-control-sm"
-                  onChange={handleChange}
-                  placeholder="https://xxxxx.com/yyyy.jpeg"
-                />
-                <div id="link_Help" className="form-text">
-                  Informe o endereço de internet onde podemos encontrar a foto
-                  de sua memoria. o endereço internet deve começar com http://.
-                  Exemplo:
-                  https://placar.abril.com.br/wp-content/uploads/2021/09/alx_esporte-futebol-memoria-pele-20140501-03_original.jpeg
-                </div>
-              </div>
-
-              <ShowPicture />
-
-              <div className="mb-3">
-                <label className="form-label">Referência</label>
-                <input
-                  key="13"
-                  type="text"
-                  id="href"
-                  value={mymemory.href}
-                  onChange={handleChange}
-                  required=""
-                  aria-describedby="href_Help"
-                  maxLength="250"
-                  className="form-control form-control-sm"
-                  placeholder="https://xxxxx.com/yyyy"
-                />
-                <div id="email_Help" className="form-text">
-                  Informe o endereço de internet onde podemos encontrar uma
-                  matéria sobre sua memoria. o endereço internet deve começar
-                  com http://. Exemplo: https://pt.wikipedia.org/wiki/Pelé
-                </div>
-              </div>
-              <ShowRef />
-
-              <div className="mb-3 form-check">
-                <input
-                  key="14"
-                  type="checkbox"
-                  id="private"
-                  value={mymemory.private}
-                  checked={mymemory.private}
-                  // defaultChecked={true}
-                  className="form-check-input form-check-input-sm"
-                  onChange={handleChange}
-                />
-                <label htmlFor="private" className="form-check-label">
-                  <strong>Privado</strong>: Selecione caso esta memória seja uma
-                  situação particular sua (parentes, amigos, etc). Caso não
-                  selecione aqui, esta memória poderá ser mostrada para outras
-                  pessoas.
-                </label>
-              </div>
-
+            </div>
+            <div className="mb-3">
               <br />
+              <label className="form-label">Texto</label>
+              <input
+                key="110"
+                type="text"
+                id="text"
+                value={mymemory.text}
+                maxLength="150"
+                className="form-control form-control-sm"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
               <br />
-            </form>
-
-            <div className="row text-center">
-              <div className="col-lg-1 col-xs-0"></div>
-              <div className="col-lg-3 col-xs-4">
-                <SaveButton fun={saveMyMemory} />
-              </div>
-              <div className="col-lg-3 col-xs-4">
-                <button
-                  className="btn btn-warning otbutton"
-                  onClick={newMemory}
-                >
-                  <span style={{ position: "relative", bottom: "5px" }}>
-                    Nova Memória
-                  </span>
-                  <Image
-                    src={logo}
-                    className="imgButton ps-2"
-                    alt="Nova Memória"
-                    width={30}
-                    height={20}
-                  />
-                </button>
-              </div>
-              <div className="col-lg-3 col-xs-4">
-                <ReturnButton action={goBack} />
+              <label className="form-label">Foto na Internet</label>
+              <input
+                key="12"
+                type="text"
+                id="link"
+                value={mymemory.link}
+                required=""
+                aria-describedby="link_Help"
+                maxLength="250"
+                className="form-control form-control-sm"
+                onChange={handleChange}
+                placeholder="https://xxxxx.com/yyyy.jpeg"
+              />
+              <div id="link_Help" className="form-text">
+                Informe o endereço de internet onde podemos encontrar a foto de
+                sua memoria. o endereço internet deve começar com http://.
+                Exemplo:
+                https://placar.abril.com.br/wp-content/uploads/2021/09/alx_esporte-futebol-memoria-pele-20140501-03_original.jpeg
               </div>
             </div>
-            {ShowError}
-            {ShowMsg}
-          </div>
 
-          <div className="col-lg-2 col-xs-0"></div>
+            <ShowPicture />
+
+            <div className="mb-3">
+              <br />
+              <label className="form-label">
+                Foto no seu computador/telefone&nbsp;&nbsp;
+              </label>
+              <input
+                key="120"
+                type="file"
+                accept="image/*"
+                id="file"
+                // value={mymemory.link}
+                // required=""
+                aria-describedby="file_Help"
+                // maxLength="250"
+                // className="form-control form-control-sm"
+                onChange={onFileChange}
+                // placeholder="https://xxxxx.com/yyyy.jpeg"
+              />
+              <div id="file_Help" className="form-text">
+                Informe uma foto de sua memória que se encontra em seu
+                computador ou telefone celular.
+              </div>
+            </div>
+            {myFile.selectedFile &&
+              console.log("myFile.selectedFile", myFile.selectedFile)}
+
+<ShowLocalPicture />
+
+            <div className="mb-3">
+              <br />
+              <label className="form-label">Referência</label>
+              <input
+                key="13"
+                type="text"
+                id="href"
+                value={mymemory.href}
+                onChange={handleChange}
+                required=""
+                aria-describedby="href_Help"
+                maxLength="250"
+                className="form-control form-control-sm"
+                placeholder="https://xxxxx.com/yyyy"
+              />
+              <div id="email_Help" className="form-text">
+                Informe o endereço de internet onde podemos encontrar uma
+                matéria sobre sua memoria. o endereço internet deve começar com
+                http://. Exemplo: https://pt.wikipedia.org/wiki/Pelé
+              </div>
+            </div>
+            <ShowRef />
+
+            <div className="mb-3 form-check">
+              <input
+                key="14"
+                type="checkbox"
+                id="private"
+                value={mymemory.private}
+                checked={mymemory.private}
+                // defaultChecked={true}
+                className="form-check-input form-check-input-sm"
+                onChange={handleChange}
+              />
+              <label htmlFor="private" className="form-check-label">
+                <strong>Privado</strong>: Selecione caso esta memória seja uma
+                situação particular sua (parentes, amigos, etc). Caso não
+                selecione aqui, esta memória poderá ser mostrada para outras
+                pessoas.
+              </label>
+            </div>
+
+            <br />
+            <br />
+          </form>
+
+          <div className="row text-center">
+            <div className="col-lg-1 col-xs-0"></div>
+            <div className="col-lg-3 col-xs-4">
+              <SaveButton fun={saveMyMemory} />
+            </div>
+            <div className="col-lg-3 col-xs-4">
+              <button className="btn btn-warning otbutton" onClick={newMemory}>
+                <span style={{ position: "relative", bottom: "5px" }}>
+                  Nova Memória
+                </span>
+                <Image
+                  src={logo}
+                  className="imgButton ps-2"
+                  alt="Nova Memória"
+                  width={30}
+                  height={20}
+                />
+              </button>
+            </div>
+            <div className="col-lg-3 col-xs-4">
+              <ReturnButton action={goBack} />
+            </div>
+          </div>
+          {ShowError}
+          {ShowMsg}
         </div>
 
-        <style jsx>{`
-          .privacyTitle {
-            font-weight: 600;
-            color: #1650a1;
-          }
-        `}</style>
+        <div className="col-lg-2 col-xs-0"></div>
       </div>
-    );
-  
+
+      <style jsx>{`
+        .privacyTitle {
+          font-weight: 600;
+          color: #1650a1;
+        }
+      `}</style>
+    </div>
+  );
 
   return (
     <React.StrictMode>
