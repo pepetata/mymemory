@@ -4,8 +4,7 @@ import fs from "fs";
 import MyMemory from "../../../models/mymemory";
 // const { dirname } = require('path');
 const path = require("path");
-const TEMP_FILES = process.env.TEMP_FILES;
-const USER_FILES = process.env.USER_FILES;
+
 
 export default async function handler(req, res) {
   console.log("/api/mymemory/file  req.body=", req.body);

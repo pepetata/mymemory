@@ -70,10 +70,9 @@ const pageContent = (
                     <Image
                       src={home30}
                       className="imgButton imgHome"
-                      alt="Logo"
+                      alt="Home"
                       width={30}
                       height={30}
-                      alt="Registre-se"
                     />{" "}
                     , clique no botão&nbsp;&nbsp;
                     <SignupButton />
@@ -137,7 +136,7 @@ const pageContent = (
               </ol>
               <h2 className="h5 blue">
                 Obs.: Quando estiver usando o celular, alguns botões podem estar
-                "escondidos" na barra de navegação.
+                &quot;escondidos&quot; na barra de navegação.
               </h2>
               <ul>
                 <li className="mt-1">

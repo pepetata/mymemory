@@ -25,7 +25,7 @@ const Login = (props) => {
 
   useEffect(() => {
     console.log("login - dentro do useEffect", needlogin, timeout, r, router.query);
-  }, [props]);
+  });
 
   const tooglePW = (event) => {
     event.preventDefault();
@@ -204,7 +204,7 @@ const Login = (props) => {
             <div className="row">
               <div className="col-lg-1 col-xs-0"></div>
               <div className="col-lg-5 col-xs-12 text-center mt-2">
-                <Link href="/forgotpw">
+                <Link href={`/forgotpw?email=${user?.email ? user.email:""}`}>
                   <a className="fs-5 fw-bold">Esqueci minha senha</a>
                 </Link>
               </div>

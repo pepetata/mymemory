@@ -43,7 +43,7 @@ const HeaderNav = (props) => {
   useEffect(() => {
     console.log("HeaderNav useEffect", userId, props,window.location.pathname);
     import("bootstrap/dist/js/bootstrap.min");
-  }, [props]);
+  }, [props, userId]);
 
   // const Hide = { display: "none" };
   // const Show = { display: "block" };

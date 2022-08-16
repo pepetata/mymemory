@@ -45,12 +45,12 @@ const pageContent = (
               <br />
               <br />
               <p>
-                <strong>A solução é exercitar o "músculo" cérebro!</strong>
+                <strong>A solução é exercitar o &quot;músculo&quot; cérebro!</strong>
               </p>
               <br />
               <br />
               <p>
-                Nós temos muitas "memórias" cadastradas para você se exercitar. Mas você pode criar suas próprias memórias para seu treino pessoal.
+                Nós temos muitas &quot;memórias&quot; cadastradas para você se exercitar. Mas você pode criar suas próprias memórias para seu treino pessoal.
               </p>
               <br />
               <br />

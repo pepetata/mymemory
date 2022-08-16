@@ -11,7 +11,7 @@ import { sleep, titleCase } from "../lib/common";
 import Layout from "../components/Layout";
 import SaveButton from "../containers/SaveButton";
 
-import logo from "../images/logo20.png";
+
 import view_not30 from "../images/view_not30.png";
 import ReturnButton from "../containers/ReturnButton";
 import DeleteButton from "../containers/DeleteButton";
@@ -50,7 +50,7 @@ const MyMemory = (props) => {
   useEffect(() => {
     if (!props.user?.id > 0) router.push("/login?needlogin=true&r=/mymemory");
     // console.log("Feed useEffect");
-  }, [props]);
+  });
 
   const displayErrorMsg = (val) => {
     if (val) SetShowError({ display: "block" });
