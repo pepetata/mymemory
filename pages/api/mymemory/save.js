@@ -5,6 +5,7 @@ import path from "node:path";
 import initMiddleware from "../../../lib/init-middleware";
 import validateMiddleware from "../../../lib/validate-middleware";
 import MyMemory from "../../../models/mymemory";
+import { newMemoryEmail } from "../../../mail/myMemoryEmail";
 
 import { fileURLToPath } from "url";
 
@@ -23,12 +24,14 @@ const validateBody = initMiddleware(
         .toLowerCase()
         .escape(),
       body("data.texto").trim().toLowerCase().escape(),
-      body("data.link").if((value, { req }) => req.body.data.link)
-      .isURL({ protocols: ["http", "https"] })
-      .withMessage("O endereço da foto da internet não é válido."),
-      body("data.href").if((value, { req }) => req.body.data.href)
-      .isURL({ protocols: ["http", "https"] })
-      .withMessage("O endereço da referência não é válido."),
+      body("data.link")
+        .if((value, { req }) => req.body.data.link)
+        .isURL({ protocols: ["http", "https"] })
+        .withMessage("O endereço da foto da internet não é válido."),
+      body("data.href")
+        .if((value, { req }) => req.body.data.href)
+        .isURL({ protocols: ["http", "https"] })
+        .withMessage("O endereço da referência não é válido."),
       // body("data.link").custom((value, { req }) => {
       //   console.log("validating link");
       //   if (value == "") return true;
@@ -62,28 +65,30 @@ export default async function handler(req, res) {
     return;
   }
 
-  // move picture from folder tempFiles to userFiles
-  const tempFile = req.body.data.newImage;
-  const userFile = tempFile.replace("tempFiles", "userFiles");
-  const folder = `${__dirname}${path.sep}..${path.sep}..${path.sep}..${path.sep}public`;
-  // console.log('----------------------', tempFile, userFile, __dirname, folder)
+  let userFile
+  if (req.body.data.newImage) {
+    // move picture from folder tempFiles to userFiles
+    const tempFile = req.body.data.newImage;
+    userFile = tempFile.replace("tempFiles", "userFiles");
+    const folder = `${__dirname}${path.sep}..${path.sep}..${path.sep}..${path.sep}public`;
+    // console.log('----------------------', tempFile, userFile, __dirname, folder)
 
-   // move new pictue from folder tempFiles to userFiles
-  rename(folder + tempFile, folder + userFile, (err) => {
-    if (err) throw err;
-    console.log("Rename complete!");
-  });
-
-  // remove old picture from folder userFiles
-  if (req.body.data){
-    const removeFile = folder+req.body.data.picture
-    console.log('removeFile',removeFile)
-    unlink(removeFile, (err) => {
+    // move new pictue from folder tempFiles to userFiles
+    rename(folder + tempFile, folder + userFile, (err) => {
       if (err) throw err;
-      console.log("Delete complete!");
+      console.log("Rename complete!");
     });
-  }
 
+    // remove old picture from folder userFiles
+    if (req.body.data.picture) {
+      const removeFile = folder + req.body.data.picture;
+      console.log("removeFile", removeFile);
+      unlink(removeFile, (err) => {
+        if (err) throw err;
+        console.log("Delete complete!");
+      });
+    }
+  }
   // save mymemory
   var id = req.body.data?.id;
   const mymemory = new MyMemory(
@@ -143,6 +148,6 @@ export default async function handler(req, res) {
     console.log("erros = ", errors.array());
     return res.status(200).json({ errors: errors.array() });
   }
-
-  res.status(200).send({ id: mymemoryId , picture: userFile});
+  newMemoryEmail(req.body.user, mymemory, req);
+  res.status(200).send({ id: mymemoryId, picture: userFile });
 }

@@ -145,6 +145,8 @@ const pageContent = (
                       <AddMemoryButton />
                     </strong>
                   </li>
+                  <li>
+                    <strong className="red">Cadastre quantas memórias quiser!!</strong></li>
                 </ul>
                 <br />
                 {/* ----------------------------------------------------------- */}
