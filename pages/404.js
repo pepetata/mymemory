@@ -8,7 +8,7 @@ const A404 = (props) => {
   return (
     <React.StrictMode>
       <Layout
-        title="Meu Ídolo - Página não encontrada"
+        title="Memoria Test - Página não encontrada"
         content={pageContent}
         group1={false}  group2 = {false} group3={false}
       />

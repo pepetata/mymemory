@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 // import validator from "validator";
-import { rename } from "node:fs";
+import { rename, unlink } from "node:fs";
 import path from "node:path";
 import initMiddleware from "../../../lib/init-middleware";
 import validateMiddleware from "../../../lib/validate-middleware";
@@ -68,10 +68,21 @@ export default async function handler(req, res) {
   const folder = `${__dirname}${path.sep}..${path.sep}..${path.sep}..${path.sep}public`;
   // console.log('----------------------', tempFile, userFile, __dirname, folder)
 
+   // move new pictue from folder tempFiles to userFiles
   rename(folder + tempFile, folder + userFile, (err) => {
     if (err) throw err;
     console.log("Rename complete!");
   });
+
+  // remove old picture from folder userFiles
+  if (req.body.data){
+    const removeFile = folder+req.body.data.picture
+    console.log('removeFile',removeFile)
+    unlink(removeFile, (err) => {
+      if (err) throw err;
+      console.log("Delete complete!");
+    });
+  }
 
   // save mymemory
   var id = req.body.data?.id;
@@ -133,5 +144,5 @@ export default async function handler(req, res) {
     return res.status(200).json({ errors: errors.array() });
   }
 
-  res.status(200).send({ id: mymemoryId });
+  res.status(200).send({ id: mymemoryId , picture: userFile});
 }

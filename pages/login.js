@@ -255,7 +255,7 @@ const Login = (props) => {
   return (
     <React.StrictMode>
       <Layout
-        title="Login no Sistema Meu Ídolo"
+        title="Login no Sistema Memoria Test"
         content={pageContent}
         group1={false}
         group2={false}

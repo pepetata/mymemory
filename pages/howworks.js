@@ -50,7 +50,7 @@ const pageContent = (
               </p>
               <br />
               <p>
-                Basta ver o que mostramos e responder silenciosamente a
+                Basta ver o que mostramos e responder a
                 situação. Se quiser confirmar a resposta, clique no botão&nbsp;
                 <Image
                   src={showName}
@@ -119,13 +119,13 @@ const pageContent = (
                 .
               </p>
               <br />
-              <p>
-                Sendo cadastrado, você pode entrar no sistema (veja abaixo
+              <p><strong>
+                Sendo cadastrado, você pode entrar no sistema </strong>(veja abaixo
                 em&nbsp;
                 <Link href="/howsignin">
                   <a>Como se Registrar</a>
                 </Link>
-                ) e ver todas as nossas memórias mais as suas. E ainda pode nos
+                ) <strong>e ver todas as nossas memórias mais as suas. E ainda pode nos
                 dizer que não deseja ver alguma memória que mostramos clicando
                 no botão&nbsp;
                 <Image
@@ -134,7 +134,7 @@ const pageContent = (
                   width={128}
                   height={52}
                   alt="Entrar no Sistema"
-                />
+                /></strong>
               </p>
               <br />
 

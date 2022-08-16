@@ -5,7 +5,7 @@ function sendContactEmail(req) {
     return new Promise((resolve) => {
       
         const cc = req.body.email;
-        const subject = "Mensagem de um Usuário do Meu Ídolo";
+        const subject = "Mensagem de um Usuário do Memoria Test";
         var text = '<p>Nosso usuário ' + req.body.name + ' enviou esta mensagem para nossa equipe:</p>\n\n';
         text += "<hr>";
         text += '<div>' + req.body.text + '</div>\n\n';

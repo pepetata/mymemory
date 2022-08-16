@@ -6,7 +6,7 @@ export default class Privacy extends Component {
     return (
       <React.StrictMode>
         <Layout
-          title="Política de Privaciadade do Sistem Meu Ídolo"
+          title="Política de Privaciadade do Sistem Memoria Test"
           content={pageContent}
           group1={false}  group2 = {false} group3={false}
         />
@@ -26,7 +26,7 @@ const pageContent = (
           <div id="body">
             <div id="anuncie">
               <h1 className="h3 text-center privacyTitle">
-                Política de Privacidade da Sistema Meu Ídolo
+                Política de Privacidade da Sistema Memoria Test
               </h1>
               <br />
             </div>
@@ -40,13 +40,12 @@ const pageContent = (
               <p> </p>
               <p>
                 A garantia da confidencialidade dos dados pessoais dos
-                utilizadores do nosso site é importante para o Sistema Meu
-                Ídolo.
+                utilizadores do nosso site é importante para o Sistema Memoria Test.
               </p>
               <p> </p>
               <p>
                 Todas as informações pessoais relativas a membros, assinantes,
-                clientes ou visitantes que usem o Sistema Meu Ídolo serão
+                clientes ou visitantes que usem o Sistema Memoria Test serão
                 tratadas em concordância com a Lei da Proteção de Dados Pessoais
                 de 26 de outubro de 1998 (Lei n.º 67/98).
               </p>
@@ -58,8 +57,8 @@ const pageContent = (
               </p>
               <p> </p>
               <p>
-                O uso do Sistema Meu Ídolo pressupõe a aceitação deste Acordo de
-                privacidade. A equipa do Sistema Meu Ídolo reserva-se ao direito
+                O uso do Sistema Memoria Test pressupõe a aceitação deste Acordo de
+                privacidade. A equipa do Sistema Memoria Test reserva-se ao direito
                 de alterar este acordo sem aviso prévio. Deste modo,
                 recomendamos que consulte a nossa política de privacidade com
                 regularidade de forma a estar sempre atualizado.
@@ -137,7 +136,7 @@ const pageContent = (
               <p> </p>
               <h2 className="h5 privacyTitle">Ligações a Sites de terceiros</h2>
               <p>
-                O Sistema Meu Ídolo possui ligações para outros sites, os quais,
+                O Sistema Memoria Test possui ligações para outros sites, os quais,
                 a nosso ver, podem conter informações / ferramentas úteis para
                 os nossos visitantes. A nossa política de privacidade não é
                 aplicada a sites de terceiros, pelo que, caso visite outro site

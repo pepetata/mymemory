@@ -137,10 +137,25 @@ module.exports = class MyMemory {
           "UPDATE mymemories SET  `name` = ?, `text` = ?, `link` = ?,  `href` = ?, `private` = ?, `picture` = ? WHERE id =?",
         values: [this.name, this.text, this.link, this.href, this.private, this.picture, this.id],
       });
-      console.log("MyMemory " + this.id + " updated.", this.name, this);
+      console.log("MyMemory " + this.id + " updated.", this.name);
       return this.id;
     } catch (error) {
       console.log("MyMemory update error =", this.id, this.name);
+      return { error: -1 };
+    }
+  }
+
+  async delete(id) {
+    try {
+      const res = await con({
+        query:
+          "DELETE FROM mymemories WHERE id =?",
+        values: [id],
+      });
+      console.log("MyMemory " + id + " deleted.");
+      return this.id;
+    } catch (error) {
+      console.log("MyMemory delete error =", id);
       return { error: -1 };
     }
   }

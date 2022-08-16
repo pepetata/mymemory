@@ -108,18 +108,6 @@ const HeaderNav = (props) => {
         <a>
           <SigninButton />
         </a>
-        {/* <a>
-          <Image
-            src={entrar}
-            className="imgButton"
-            width={109}
-            height={46}
-            alt="Entrar no Sistema"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            title="Clique para entrar na aplicação e ver as notícias de seus ídolos."
-          />
-        </a> */}
       </Link>
     );
   };
@@ -203,11 +191,7 @@ const HeaderNav = (props) => {
               </li>
               {group1 && (
                 <li className="nav-item pe-4 my-pt-4">
-                  <Link href="/mymemory">
-                    <a>
-                      <NewMemoryButton />
-                    </a>
-                  </Link>
+                      <NewMemory />
                 </li>
               )}
 

@@ -3,3 +3,5 @@
 - celular- menu nao esta ok
 - incluir foto por arquivo
 - PROBLEMA - ImageMagic - como instalar no servidor?
+- esqueci minha senha
+- email de nova memoria cadastrada

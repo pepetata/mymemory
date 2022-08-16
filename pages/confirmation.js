@@ -106,7 +106,7 @@ const Confirmation = (props) => {
   return (
     <React.StrictMode>
       <Layout
-        title="Confirmação de Correio Eletrônico - Meu Ídolo"
+        title="Confirmação de Correio Eletrônico - Memoria Test"
         content={pageContent}
         group1={false}
         group2={false}

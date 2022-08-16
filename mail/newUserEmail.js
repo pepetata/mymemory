@@ -8,9 +8,9 @@ function newUserEmail(user, req) {
       : "http";
 
   const email = user.email;
-  const subject = "Registro no Sistema Meu Ídolo";
+  const subject = "Registro no Sistema Memoria Test";
   var text = "<p>Olá " + user.nickname + " !!!</p>\n\n";
-  text += "<p>Obrigado por registrar-se no Sistema Meu Ídolo.</p>\n\n";
+  text += "<p>Obrigado por registrar-se no Sistema Memoria Test.</p>\n\n";
   text +=
     '<p>Para confirmar seu email e finalizar seu registro, por favor  <a href="' +
     proto +

@@ -14,14 +14,18 @@ import SaveButton from "../containers/SaveButton";
 import logo from "../images/logo20.png";
 import view_not30 from "../images/view_not30.png";
 import ReturnButton from "../containers/ReturnButton";
+import DeleteButton from "../containers/DeleteButton";
+import AddMemoryButton from "../containers/AddMemoryButton";
 
 const newMyMemory = {
   id: 0,
   name: "",
+  text: "",
   link: "",
   href: "",
   private: false,
   user: 0,
+  picture: "",
 };
 
 const MyMemory = (props) => {
@@ -37,9 +41,11 @@ const MyMemory = (props) => {
   const [changed, setChanged] = useState(false);
   const [oldName, setOldName] = useState("");
   const [myFile, setMyFile] = useState({ selectedFile: null });
-  const [newImage, setNewImage] = useState(mymemory.picture? mymemory.picture: "");
+  const [newImage, setNewImage] = useState(
+    mymemory.picture ? mymemory.picture : ""
+  );
 
-  console.log("MyMemory", props, props.user?.id > 0);
+  console.log("MyMemory mymeory=", mymemory);
 
   useEffect(() => {
     if (!props.user?.id > 0) router.push("/login?needlogin=true&r=/mymemory");
@@ -135,7 +141,7 @@ const MyMemory = (props) => {
 
     // sanitize inputs
     mm.name = titleCase(mm.name.trim());
-    mm.newImage =  newImage
+    mm.newImage = newImage;
     validator.escape(mm.name.trim());
     // mm.link=encodeURI(mm.link)
     // mm.href=encodeURI(mm.href)
@@ -147,6 +153,7 @@ const MyMemory = (props) => {
       headers: { "Content-Type": "application/json" },
     });
     const json = await res.json();
+    console.log("saveMyMemory json==================================", json);
     console.log("idRef.current.value", idRef.current.value);
     if (json.errors) {
       setFormErrors(json.errors);
@@ -159,9 +166,48 @@ const MyMemory = (props) => {
         setFormMsgs([{ msg: "Seus dados foram alterados com sucesso." }]);
       } else {
         //idRef.current.value = json.id;
-        setMyMemory({ ...mymemory, id: json.id });
+        setNewImage("");
         setFormMsgs([{ msg: "Sua nova memória foi gravada com sucesso." }]);
       }
+      setMyMemory({
+        ...mymemory,
+        id: json.id,
+        picture: json.picture,
+        newImage: "",
+      });
+      setNewImage("");
+      setMyFile({ selectedFile: null });
+      setShowMsg(true);
+      await sleep(3);
+      setShowMsg(false);
+      setChanged(false);
+    }
+  };
+
+  const deleteMyMemory = async (event) => {
+    console.log("deleteMyMemory   ====");
+    if (event) event.preventDefault();
+    displayErrorMsg(false);
+    setShowMsg(false);
+
+    if (!confirm("Você realmente deseja apagar esta memória?")) return;
+    const res = await fetch("/api/mymemory/delete", {
+      method: "POST",
+      body: JSON.stringify({ data: mymemory.id }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const json = await res.json();
+    console.log("deleteMyMemory json==================================", json);
+    if (json.errors) {
+      setFormErrors(json.errors);
+      SetShowError({ display: "block" });
+    } else {
+      SetShowError({ display: "none" });
+      // save/update new user id
+      setFormMsgs([{ msg: "Sua memória foi apagada com sucesso." }]);
+      setMyMemory(newMyMemory);
+      setNewImage("");
+      setMyFile({ selectedFile: null });
       setShowMsg(true);
       await sleep(3);
       setShowMsg(false);
@@ -185,7 +231,7 @@ const MyMemory = (props) => {
     if ("id" in json) {
       console.log("achou a memoria", json);
       setMyMemory(json);
-      setNewImage(json.picture)
+      setNewImage(json.picture);
     }
   };
 
@@ -213,7 +259,7 @@ const MyMemory = (props) => {
         return;
     }
     console.log("changed");
-    router.back();
+    router.push("/");
   };
 
   const handleChange = (event) => {
@@ -320,14 +366,19 @@ const MyMemory = (props) => {
   };
 
   const ShowLocalPicture = () => {
-    console.log("ShowLocalPicture", mymemory.picture);
-    if (! mymemory.picture && ! newImage) return "";
+    console.log(
+      "ShowLocalPicture picture=",
+      mymemory.picture,
+      "newImage",
+      newImage
+    );
+    if (!mymemory.picture && !newImage) return "";
     else
       return (
         <div className="text-center">
           <picture>
             <img
-              src={(newImage ? newImage : mymemory.picture)}
+              src={newImage ? newImage : mymemory.picture}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/images/logobig.png";
@@ -346,7 +397,7 @@ const MyMemory = (props) => {
   };
 
   const ShowRef = () => {
-    if (mymemory.href && mymemory.href.search('http://') > -1)
+    if (mymemory.href && mymemory.href.search(/http[s]:\/\//) > -1)
       return (
         <div className="text-center">
           <br />
@@ -383,7 +434,7 @@ const MyMemory = (props) => {
               key="10"
             />
             <div className="mb-3">
-              <label className="form-label">Resposta</label>
+              <label className="form-label bold">Resposta</label>
               <input
                 key="11"
                 type="text"
@@ -395,10 +446,14 @@ const MyMemory = (props) => {
                 onChange={handleChange}
                 onBlur={findName}
               />
+              <div className="form-text">
+                Está é a resposta que vai ser mostrada para conferir se a pessoa
+                realmente acertou.
+              </div>
             </div>
             <div className="mb-3">
               <br />
-              <label className="form-label">Texto</label>
+              <label className="form-label bold">Texto</label>
               <input
                 key="110"
                 type="text"
@@ -408,10 +463,14 @@ const MyMemory = (props) => {
                 className="form-control form-control-sm"
                 onChange={handleChange}
               />
+            <div className="form-text">
+              Se não for usar uma foto, escreva um texto com uma pergunta, ou
+              então alguma informação completamentar à foto.
+            </div>
             </div>
             <div className="mb-3">
               <br />
-              <label className="form-label">Foto na Internet</label>
+              <label className="form-label bold">Foto na Internet</label>
               <input
                 key="12"
                 type="text"
@@ -436,7 +495,7 @@ const MyMemory = (props) => {
 
             <div className="mb-3">
               <br />
-              <label className="form-label">
+              <label className="form-label bold">
                 Foto no seu computador/telefone&nbsp;&nbsp;
               </label>
               <input
@@ -460,11 +519,11 @@ const MyMemory = (props) => {
             {myFile.selectedFile &&
               console.log("myFile.selectedFile", myFile.selectedFile)}
 
-<ShowLocalPicture />
+            <ShowLocalPicture />
 
             <div className="mb-3">
               <br />
-              <label className="form-label">Referência</label>
+              <label className="form-label bold">Referência</label>
               <input
                 key="13"
                 type="text"
@@ -477,7 +536,7 @@ const MyMemory = (props) => {
                 className="form-control form-control-sm"
                 placeholder="https://xxxxx.com/yyyy"
               />
-              <div id="email_Help" className="form-text">
+              <div id="href_Help" className="form-text">
                 Informe o endereço de internet onde podemos encontrar uma
                 matéria sobre sua memoria. o endereço internet deve começar com
                 http://. Exemplo: https://pt.wikipedia.org/wiki/Pelé
@@ -495,13 +554,16 @@ const MyMemory = (props) => {
                 // defaultChecked={true}
                 className="form-check-input form-check-input-sm"
                 onChange={handleChange}
+                aria-describedby="private_Help"
               />
               <label htmlFor="private" className="form-check-label">
-                <strong>Privado</strong>: Selecione caso esta memória seja uma
-                situação particular sua (parentes, amigos, etc). Caso não
-                selecione aqui, esta memória poderá ser mostrada para outras
-                pessoas.
+                <strong>Privado</strong>
               </label>
+              <div id="private_Help" className="form-text">
+                Selecione caso esta memória seja uma situação particular sua
+                (parentes, amigos, etc). Se não selecionar aqui, esta memória
+                será mostrada para outras pessoas.
+              </div>
             </div>
 
             <br />
@@ -509,12 +571,13 @@ const MyMemory = (props) => {
           </form>
 
           <div className="row text-center">
-            <div className="col-lg-1 col-xs-0"></div>
+            <div className="col-lg-0 col-xs-0"></div>
             <div className="col-lg-3 col-xs-4">
               <SaveButton fun={saveMyMemory} />
             </div>
             <div className="col-lg-3 col-xs-4">
-              <button className="btn btn-warning otbutton" onClick={newMemory}>
+            <AddMemoryButton fun={newMemory} />
+              {/* <button className="btn btn-warning otbutton" onClick={newMemory}>
                 <span style={{ position: "relative", bottom: "5px" }}>
                   Nova Memória
                 </span>
@@ -525,7 +588,10 @@ const MyMemory = (props) => {
                   width={30}
                   height={20}
                 />
-              </button>
+              </button> */}
+            </div>
+            <div className="col-lg-3 col-xs-4">
+              <DeleteButton action={deleteMyMemory} active={mymemory.id} />
             </div>
             <div className="col-lg-3 col-xs-4">
               <ReturnButton action={goBack} />

@@ -198,6 +198,24 @@ const Index = (props) => {
             />
           </picture>
         )}
+        {mymemory.picture > "" && (
+          <picture>
+            <img
+              src={mymemory.picture || "/images/logobig.png"}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/logobig.png";
+              }}
+              // className="img-fluid"
+              className={`picImg ${mymemory.link &&' ms-3'}`}
+              // style={{mimHeight: '100%'}}
+              alt="Foto Local"
+              width={300}
+              height={300}
+              maxheight={300}
+            />
+          </picture>
+        )}
         {mymemory.text > "" && (
           <div className="row">
             <div className="col-lg-4 col-xs-0"></div>
@@ -293,7 +311,7 @@ const Index = (props) => {
           type="button"
           className="btn btn-danger otbutton ms-3"
           onClick={() => incCounter("wrong")}
-          title="Errou a resposta. Clique aqui."
+          title="Errou a resposta? Clique aqui."
         >
           Errei
         </button>

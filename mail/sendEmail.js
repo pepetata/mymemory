@@ -30,8 +30,8 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
         var msg = '<!DOCTYPE html><html><body>'+ text;
         if (addFooter) {
             msg+= '<br>Atenciosamente,<br>';
-            msg+= '<p>Equipe Meu Ídolo</p>';
-            msg+= '<a href="'+url+'"><img alt="Meu Ídolo" src="'+logo+'" width="200" style="display:block;"></a>'; //TODO - trocar a url
+            msg+= '<p>Equipe Memoria Test</p>';
+            msg+= '<a href="'+url+'"><img alt="Memoria Test" src="'+logo+'" width="200" style="display:block;"></a>'; //TODO - trocar a url
         }
         msg += '</body></html>';
         console.log(msg)

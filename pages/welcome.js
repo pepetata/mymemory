@@ -99,7 +99,7 @@ const Welcome = (props) => {
   return (
     <React.StrictMode>
       <Layout
-        title="Seja bem-vindo ao Meu Ídolo!!"
+        title="Seja bem-vindo ao Memoria Test!!"
         content={pageContent}
         group1={false}
         group2={false}

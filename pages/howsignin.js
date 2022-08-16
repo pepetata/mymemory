@@ -47,7 +47,7 @@ const pageContent = (
                 <Link href="/howworks">
                       <a>Como Usar</a>
                     </Link>
-                    ). </p>
+                    . </p>
 
               <p>Mas se quiser usar suas próprias memórias durante os testes, então é necessário se cadastrar (veja abaixo em&nbsp;
                 <Link href="/howsignup">
@@ -114,7 +114,7 @@ const pageContent = (
                     width={62}
                     height={47}
                     alt="Menu"
-                  />
+                  /> que fica no lado superior direito da tela.
                 </li>
               </ul>
               <br />

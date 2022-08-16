@@ -15,7 +15,7 @@ const CancelButton = (props) => {
         <Image
           src={cancel}
           className="imgButton  ps-2"
-          alt="Gravar"
+          alt="Cancelar"
           width={30}
           height={20}
         />

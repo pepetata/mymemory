@@ -123,6 +123,7 @@ const pageContent = (
                   PRONTO!! Seu cadastro está finalizado
                 </li>
                 <ul>
+                <li className="mt-1">Este cadastro é feito apenas uma vez.</li>
                   <li className="mt-1">
                     Se quiser cadastrar suas memórias e depois usá-las em seus
                     testes, você precisa se registrar no sistema (veja abaixo
@@ -147,7 +148,7 @@ const pageContent = (
                     width={62}
                     height={47}
                     alt="Menu"
-                  />
+                  /> que fica no lado superior direito da tela.
                 </li>
               </ul>
               <br />
