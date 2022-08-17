@@ -5,4 +5,4 @@
 * esqueci minha senha
 * email de nova memoria cadastrada
 - futuro - compartilhar memorias, entre amigos, familiares
-- definir lang = pt-BR
+* definir lang = pt-BR

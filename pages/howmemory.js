@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Iron from "@hapi/iron";
+import { getTokenCookie } from "../lib/auth-cookies";
 
 import Layout from "../components/Layout";
 import NewMemoryButton from "../containers/NewMemoryButton";
@@ -241,8 +243,24 @@ const pageContent = (
 );
 
 export async function getServerSideProps(context) {
-  let user = {};
-  if (context.req.cookies.midu) user = JSON.parse(context.req.cookies.midu);
+  const TOKEN_SECRET = process.env.SECRET_COOKIE_PASSWORD;
+  let user = {
+    accept: false,
+    agreement: true,
+    email: "",
+    full_name: "",
+    id: "",
+    nickname: "",
+    pw: "",
+  };
+
+  const token = getTokenCookie(context.req);
+  if (token) {
+    const session = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults);
+    console.log("howworks - getServerSideProps  session=", session);
+    user = session;
+  }
+
   return {
     props: { user }, // will be passed to the page component as props
   };

@@ -3,7 +3,7 @@
 import con from "../lib/dbconnection";
 
 module.exports = class MyMemory {
-  constructor(id, name, text, link, href, privateMem, user,picture) {
+  constructor(id, name, text, link, href, privateMem, user, picture) {
     this.id = id;
     this.name = name;
     this.text = text;
@@ -11,7 +11,7 @@ module.exports = class MyMemory {
     this.href = href;
     this.private = privateMem;
     this.user = user;
-    this.picture = picture
+    this.picture = picture;
   }
 
   async hide(id, user) {
@@ -55,7 +55,9 @@ module.exports = class MyMemory {
         (user === 0
           ? "private=0"
           : "( private =0 OR (private IN (0,1) AND user=" + user + " ))") +
-        " AND id NOT IN (?) AND id NOT IN (SELECT memory FROM hide WHERE user="+user+")";
+        " AND id NOT IN (?) AND id NOT IN (SELECT memory FROM hide WHERE user=" +
+        user +
+        ")";
       const res = await con({
         query: sql,
         values: [exceptArray],
@@ -91,7 +93,9 @@ module.exports = class MyMemory {
         (user === 0
           ? "private=0"
           : "( private =0 OR (private IN (0,1) AND user=" + user + " ))") +
-        " AND id NOT IN (?) AND id NOT IN (SELECT memory FROM hide WHERE user="+user+") ORDER BY id LIMIT 1 OFFSET ?";
+        " AND id NOT IN (?) AND id NOT IN (SELECT memory FROM hide WHERE user=" +
+        user +
+        ") ORDER BY id LIMIT 1 OFFSET ?";
       const res = await con({
         query: sql,
         values: [exceptArray, offset],
@@ -118,7 +122,15 @@ module.exports = class MyMemory {
       const res = await con({
         query:
           "INSERT INTO mymemories (`name`,`text`,`link`,`href`,`private`,  `user`, picture, `created`, `status`) VALUES (?,?,?,?,?,?,?,now(),'0')",
-        values: [this.name, this.text, this.link, this.href, this.private, this.user, this.picture],
+        values: [
+          this.name,
+          this.text,
+          this.link,
+          this.href,
+          this.private,
+          this.user,
+          this.picture,
+        ],
       });
       // console.log("save MyMemory res=", res);
       console.log("MyMemory " + res.insertId + " added.", this.name);
@@ -135,7 +147,15 @@ module.exports = class MyMemory {
       const res = await con({
         query:
           "UPDATE mymemories SET  `name` = ?, `text` = ?, `link` = ?,  `href` = ?, `private` = ?, `picture` = ? WHERE id =?",
-        values: [this.name, this.text, this.link, this.href, this.private, this.picture, this.id],
+        values: [
+          this.name,
+          this.text,
+          this.link,
+          this.href,
+          this.private,
+          this.picture,
+          this.id,
+        ],
       });
       console.log("MyMemory " + this.id + " updated.", this.name);
       return this.id;
@@ -148,8 +168,19 @@ module.exports = class MyMemory {
   async delete(id) {
     try {
       const res = await con({
-        query:
-          "DELETE FROM mymemories WHERE id =?",
+        query: "DELETE FROM hide WHERE memory =?",
+        values: [id],
+      });
+      console.log("MyMemory hide for memory id " + id + " deleted.");
+      // return this.id;
+    } catch (error) {
+      console.log("MyMemory hide delete error =", id);
+      return { error: -1 };
+    }
+
+    try {
+      const res = await con({
+        query: "DELETE FROM mymemories WHERE id =?",
         values: [id],
       });
       console.log("MyMemory " + id + " deleted.");

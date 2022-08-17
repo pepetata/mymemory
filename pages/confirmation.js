@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import validator from "validator";
+import User from "../models/user";
 import Layout from "../components/Layout";
 import entrar from "../images/entrar.png";
 import menu from "../images/menu.png";
@@ -117,30 +119,39 @@ const Confirmation = (props) => {
 };
 
 export async function getServerSideProps(context) {
+  // const {id, email} = req.body;
+  
+  
+  
+  
   let error = true;
   let user = { error: false, confirmation: false };
-  console.log("confirmation", context.query);
+  console.log("confirmation - getServerSideProps", context.query);
   const { id, email } = context.query;
 
-  if (!id || !email) {
+  if (!id || !email || ! validator.isEmail(email)||!validator.isNumeric(id)) {
     return { props: { error, user } };
   }
-  const res = await fetch(`${server}/api/user/confirmation`, {
-    method: "POST",
-    body: JSON.stringify({ email: email, id: id }),
-    headers: { "Content-Type": "application/json" },
-  });
-  const json = await res.json();
-
-  // console.log("voltou", json);
-  user = json.user;
+  user = await new User().getByEmailId(email, id);
   error = false;
-  if (user.error !== -1) {
+  if (user.error != -1) {
     user.error = false;
     user.confirmation = true;
+      await new User().confirmEmail(id);
   }
-  // console.log('props=',  { props: { error, user } });
-  return { props: { error, user } };
+
+  // const res = await fetch(`${server}/api/user/confirmation`, {
+  //   method: "POST",
+  //   body: JSON.stringify({ email: email, id: id }),
+  //   headers: { "Content-Type": "application/json" },
+  // });
+  // const json = await res.json();
+
+  // // console.log("voltou", json);
+  // user = json.user;
+
+  console.log('props=',  { props: { error, user } });
+  return { props: { error, user: JSON.parse(JSON.stringify(user)) } };
 }
 
 export default Confirmation;

@@ -7,6 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Iron from "@hapi/iron";
 import { getTokenCookie } from "../lib/auth-cookies";
+import MyMemory from "../models/mymemory";
+import { titleCase } from "../lib/common";
 
 import Layout from "../components/Layout";
 import variables from "../styles/variables.module.scss";
@@ -33,13 +35,6 @@ const Index = (props) => {
   const size = useWindowSize();
   const [viewTable, setViewTable] = useState(true);
   console.log(
-    "index size=",
-    size,
-    viewTable,
-    typeof size.width,
-    size.width > 620
-  );
-  console.log(
     "Index user=",
     user,
     "mymemory=",
@@ -49,6 +44,11 @@ const Index = (props) => {
     "userid",
     userId
   );
+
+  // useEffect(() => {
+  //   // Your code here
+  //   document.getElementById('showMemory').focus();
+  // });
 
   // Hook
   function useWindowSize() {
@@ -132,6 +132,8 @@ const Index = (props) => {
 
       setMyMemory(json);
       if (json.id) setExcept([...except, json.id]);
+    document.getElementById('showMemory').focus();
+
     } catch (error) {
       console.error("An unexpected error occurred:", error);
       // displayErrorMsg(true, [error.message]);
@@ -164,8 +166,7 @@ const Index = (props) => {
       });
       const json = await res.json();
       console.log(json);
-
-      // getNext(except);
+      getNext(except);
     } catch (error) {
       console.error("An unexpected error occurred:", error);
       // displayErrorMsg(true, [error.message]);
@@ -482,7 +483,7 @@ const Index = (props) => {
     // api/robot para pegar mais
     return (
       <>
-        <div className="text-center">
+        <div id="showMemory" tabIndex="0" className="text-center">
           {"id" in mymemory ? (
             ""
           ) : (
@@ -566,22 +567,29 @@ export async function getServerSideProps(context) {
     console.log("index - getServerSideProps  session=", session);
     user = session;
   }
-
+  
   // get mymemory
-  const res = await fetch(`${server}/api/mymemory/getnext`, {
-    method: "POST",
-    body: JSON.stringify({
-      except: "0",
-      user: user?.id ? user.id : 0,
-    }),
-    headers: { "Content-Type": "application/json" },
-  });
-  const mymemory = await res.json();
-  console.log("index - getServerSideProps  mymemory=", mymemory);
-  console.log("index - getServerSideProps  user=", user);
+  let mm = await new MyMemory().findAny(
+    "0",
+    user?.id ? user.id : 0
+  );
+
+
+
+  // console.log("index - getServerSideProps  fetch=", `${server}/api/mymemory/getnext`);
+  // const res = await fetch(`${server}/api/mymemory/getnext`, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     except: "0",
+  //     user: user?.id ? user.id : 0,
+  //   }),
+  //   headers: { "Content-Type": "application/json" },
+  // });
+  // const mymemory = await res.json();
+  
 
   return {
-    props: { user, mymemory }, // will be passed to the page component as props
+    props: { user, mymemory: JSON.parse(JSON.stringify(mm)) }, // will be passed to the page component as props
   };
 }
 

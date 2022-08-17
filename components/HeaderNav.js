@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Iron from "@hapi/iron";
-import { removeTokenCookie } from "../lib/auth-cookies";
 
 import SignupButton from "../containers/SignupButton";
 
@@ -13,7 +11,6 @@ import home35 from "../images/home35.png";
 // import registrar from "../images/signup.png";
 import changeUser from "../images/user.png";
 import sair from "../images/logout.png";
-import newmemory from "../images/newmemory.png";
 
 // header groups:
 // 1- create memory - only if logged
@@ -147,7 +144,7 @@ const HeaderNav = (props) => {
         <div className="container-fluid">
           <Link href="/">
             <a>
-              <Image src={logo} alt="Logo" width={250} height={49} />
+              <Image src={logo} alt="Logo" width={220} height={45} />
             </a>
           </Link>
 
