@@ -13,7 +13,7 @@ function newPassword(user, req) {
   var text = '<p>Olá ' + user.nickname + ' !!!</p>\n\n';
   text += '<p>Obrigado por usufruir do Sistema Memoria Test.</p>\n\n';
   text += '<p>Conforme sua solicitaçao, alteramos sua senha para: <strong>'+user.pw+'</strong></p>\n\n';
-  text += '<p>Acesse nosso Sistem clicando em <a href="" > ' + proto + '://' + req.headers.host + '</a> e troque sua senha de acordo com sua conveniência.</p>\n\n';
+  text += '<p>Acesse nosso Sistem clicando em <a href="' + proto + '://' + req.headers.host + '" > ' + proto + '://' + req.headers.host + '</a> e troque sua senha de acordo com sua conveniência.</p>\n\n';
 
   sendEmail(email, subject, text, true);
 //console.log(text);

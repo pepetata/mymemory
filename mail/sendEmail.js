@@ -27,7 +27,7 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
         });
 
 
-        var msg = '<!DOCTYPE html><html><body>'+ text;
+        var msg = '<!DOCTYPE html><html><body style="background-color: #fff4e5;">'+ text;
         if (addFooter) {
             msg+= '<br>Atenciosamente,<br>';
             msg+= '<p>Equipe Memoria Test</p>';

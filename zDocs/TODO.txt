@@ -3,6 +3,6 @@
 - celular- menu nao esta ok
 * incluir foto por arquivo
 * esqueci minha senha
-- email de nova memoria cadastrada
+* email de nova memoria cadastrada
 - futuro - compartilhar memorias, entre amigos, familiares
 - definir lang = pt-BR

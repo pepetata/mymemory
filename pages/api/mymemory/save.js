@@ -5,7 +5,7 @@ import path from "node:path";
 import initMiddleware from "../../../lib/init-middleware";
 import validateMiddleware from "../../../lib/validate-middleware";
 import MyMemory from "../../../models/mymemory";
-import { newMemoryEmail } from "../../../mail/myMemoryEmail";
+import { newMemoryEmail, updateMemoryEmail } from "../../../mail/myMemoryEmail";
 
 import { fileURLToPath } from "url";
 
@@ -65,8 +65,10 @@ export default async function handler(req, res) {
     return;
   }
 
-  let userFile
-  if (req.body.data.newImage) {
+  let userFile=req.body.data.picture;
+  // move new picture to userFiles
+  // check if the new Picture is in the tempFiles
+  if (req.body.data.newImage && req.body.data.newImage.search("tempFiles") > -1) {
     // move picture from folder tempFiles to userFiles
     const tempFile = req.body.data.newImage;
     userFile = tempFile.replace("tempFiles", "userFiles");
@@ -132,8 +134,10 @@ export default async function handler(req, res) {
   var mymemoryId;
   if (!id) {
     mymemoryId = await mymemory.save();
+    newMemoryEmail(req.body.user, mymemory, req);
   } else {
     mymemoryId = await mymemory.update();
+    updateMemoryEmail(req.body.user, mymemory, req);
   }
   // console.log("mymemory.save", mymemoryId);
 
@@ -148,6 +152,5 @@ export default async function handler(req, res) {
     console.log("erros = ", errors.array());
     return res.status(200).json({ errors: errors.array() });
   }
-  newMemoryEmail(req.body.user, mymemory, req);
   res.status(200).send({ id: mymemoryId, picture: userFile });
 }
