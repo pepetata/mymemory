@@ -1,5 +1,7 @@
 # docker build -t mymemory-docker .
 # docker run -p 3000:3000 mymemory-docker
+# docker-compose up -d
+# docker-compose up --build
 
 
 
