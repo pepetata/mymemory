@@ -146,7 +146,7 @@ export default async function handler(req, res) {
   user.id = userId;
 
   if (!id) {
-    // send email to confirm - TODO
+    // send email to confirm
     newUserEmail(user, req);
   }
   // mudou o email?

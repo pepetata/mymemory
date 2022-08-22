@@ -1,5 +1,14 @@
+# when instance is started or rebooted
+# cd mymemory
+# sudo service docker start
+# docker-compose up -d
+# sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+# 
+#
+
 # docker build -t mymemory-docker .
 # docker run -p 3000:3000 mymemory-docker
+#
 # docker-compose up -d
 # docker-compose up --build
 #

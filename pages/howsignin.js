@@ -65,8 +65,8 @@ const pageContent = (
                   {/* TODO trocar abaixo */}
                   <li className="mt-1">
                     Acesse nosso site novamente:&nbsp;
-                    <Link href="https://www.ondetem.org">{/* TODO trocar abaixo */}
-                      <a>www.OndeTem.org</a>
+                    <Link href="https://memoriatest.online">
+                      <a>www.MemoriaTest.online</a>
                     </Link>
                   </li>
                   <li className="mt-1">

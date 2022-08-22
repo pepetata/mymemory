@@ -63,9 +63,6 @@ const Confirmation = (props) => {
         </ul>
         <br />
         <br />
-          <div className="red strong"> {/* TODO  mudar o texto*/}
-  
-          </div>
       </div>
     );
   };

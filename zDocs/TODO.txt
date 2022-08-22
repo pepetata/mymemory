@@ -1,8 +1,9 @@
-- importar dados
-- ver no celular
-- celular- menu nao esta ok
+* importar dados
+* ver no celular
+* celular- menu nao esta ok
 * incluir foto por arquivo
 * esqueci minha senha
 * email de nova memoria cadastrada
 - futuro - compartilhar memorias, entre amigos, familiares
 * definir lang = pt-BR
+- trocar http por https

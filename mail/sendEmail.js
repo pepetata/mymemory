@@ -31,7 +31,7 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
         if (addFooter) {
             msg+= '<br>Atenciosamente,<br>';
             msg+= '<p>Equipe Memoria Test</p>';
-            msg+= '<a href="'+url+'"><img alt="Memoria Test" src="'+logo+'" width="200" style="display:block;"></a>'; //TODO - trocar a url
+            msg+= '<a href="'+url+'"><img alt="Memoria Test" src="'+logo+'" width="200" style="display:block;"></a>';
         }
         msg += '</body></html>';
         console.log(msg)
@@ -46,8 +46,7 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
             html: msg,
             replyTo: myEmail,
             headers : {
-                'List-Unsubscribe': '<mailto:unsubscribe@ondetem.org?subject=Cancelar subscrição>, <https://www.ondetem.org>' //TODO - trocar dados aqui
-            }
+                'List-Unsubscribe': '<mailto:unsubscribe@memoriatest.online?subject=Cancelar subscrição>, <https://memoriatest.online>' }
             //TODO DKIM
         };
 

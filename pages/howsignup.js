@@ -61,9 +61,9 @@ const pageContent = (
                 <li className="adstrong">Cadastre-se no sistema</li>
                 <ul>
                   <li className="mt-1">
-                    Acesse nosso site: {/* TODO trocar abaixo */}
-                    <Link href="https://www.ondetem.org">
-                      <a>www.OndeTem.org</a>
+                    Acesse nosso site: 
+                    <Link href="https://memoriatest.online">
+                      <a>www.MemoriaTest.online</a>
                     </Link>
                   </li>
                   <li className="mt-1">
