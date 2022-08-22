@@ -2,6 +2,24 @@
 # docker run -p 3000:3000 mymemory-docker
 # docker-compose up -d
 # docker-compose up --build
+#
+# install and run docker
+# sudo amazon-linux-extras install docker
+# sudo service docker start
+# sudo usermod -a -G docker ec2-user
+# Download and install docker-compose
+# sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+# Fix permissions
+# sudo chmod +x /usr/local/bin/docker-compose
+#
+# cd C:\MyIdolApp\mymemory
+# ssh -i "../AWS_MyMemory.pem" ec2-user@ec2-54-175-193-172.compute-1.amazonaws.com
+#
+#
+# para redirecionar a port 3000 para a porta 80: https://stackoverflow.com/questions/16573668/best-practices-when-running-node-js-with-port-80-ubuntu-linode
+# sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+#
+
 
 
 
