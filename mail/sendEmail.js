@@ -1,20 +1,24 @@
-var nodemailer = require('nodemailer');
+import nodemailer from "nodemailer"
+import { promises as fs } from 'fs';
+import path from "path";
 // require('dotenv').config({
 //   path: 'NODE_ENV' in process.env ? (process.env.NODE_ENV === 'development' ? './config/.env.dev' : './config/.env') : './config/.env.dev'
 // })
 
 
 function sendEmail(toEmail, subject, text, addFooter, cc) {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       const url=process.env.URL
       const logo=process.env.LOGO
-        const myEmail = 'ferreira.flavio.luiz@gmail.com';
-        const pass = 'rzivaspcolynvfyx';
+        const myEmail = 'contato@memoriatest.online';
+        const pass = 'MTZoho123.';
         
-        if (toEmail === 'myidol') toEmail = myEmail;
+        const pemFile = path.join(process.cwd(), 'certificates');
+        console.log('======================= pemFile',pemFile, pemFile + path.sep+'privateKeyDKIM.pem')
+        const pemData= await fs.readFile(pemFile + path.sep+'privateKeyDKIM.pem', "utf8")
 
         var transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
+            host: 'smtp.zoho.com',
             port: 587,
             secure: false,
             auth: {
@@ -23,7 +27,12 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
             },
             tls: {
                 rejectUnauthorized: false
-            }
+            },
+            dkim: {
+                domainName: "memoriatest.online",
+                keySelector: "zmail",
+                privateKey: pemData
+              }            
         });
 
 
