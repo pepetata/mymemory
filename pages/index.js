@@ -8,18 +8,28 @@ import Image from "next/image";
 import Iron from "@hapi/iron";
 import { getTokenCookie } from "../lib/auth-cookies";
 import MyMemory from "../models/mymemory";
-import { titleCase } from "../lib/common";
 
 import Layout from "../components/Layout";
 import variables from "../styles/variables.module.scss";
 import table30 from "../images/tables30.png";
 import table_not30 from "../images/tables_not30.png";
+import background from "../images/background.jpg";
 
 const animationSinger = { duration: 5000, easing: (t) => t };
 const animationArtist = { duration: 7000, easing: (t) => t };
 const animationSoccer = { duration: 6000, easing: (t) => t };
 const divStyle = { position: "relative", height: "300px" };
 const server = process.env.SERVER;
+const newMyMemory = {
+  id: 0,
+  name: "",
+  text: "",
+  link: "",
+  href: "",
+  private: false,
+  user: 0,
+  picture: "",
+};
 
 const Index = (props) => {
   const [user] = useState(props.user);
@@ -112,6 +122,7 @@ const Index = (props) => {
         setForgetCount(forgetCount + 1);
         break;
     }
+    setMyMemory(newMyMemory);
     getNext(except);
   };
 
@@ -132,8 +143,7 @@ const Index = (props) => {
 
       setMyMemory(json);
       if (json.id) setExcept([...except, json.id]);
-    document.getElementById('showMemory').focus();
-
+      document.getElementById("showMemory").focus();
     } catch (error) {
       console.error("An unexpected error occurred:", error);
       // displayErrorMsg(true, [error.message]);
@@ -181,6 +191,14 @@ const Index = (props) => {
   const ShowQuiz = () => {
     return (
       <div id="showPic" className="text-center">
+        {mymemory.id === 0 && (
+          <Image
+            src={background}
+            width={300}
+            height={300}
+            alt="background"
+          ></Image>
+        )}
         {mymemory.link > "" && (
           <picture>
             <img
@@ -208,7 +226,7 @@ const Index = (props) => {
                 currentTarget.src = "/images/logobig.png";
               }}
               // className="img-fluid"
-              className={`picImg ${mymemory.link &&' ms-3'}`}
+              className={`picImg ${mymemory.link && " ms-3"}`}
               // style={{mimHeight: '100%'}}
               alt="Foto Local"
               width={300}
@@ -351,66 +369,72 @@ const Index = (props) => {
     );
   };
 
-  const TableMobile = () => {   return (
-    <div  className="text-start">
-        <table style={{ margin: "0 auto", tableLayout: "fixed"}}>
-        <tbody>
-          <tr>
-            <td style={{width: "130px" }} >Mostrados: </td>
-            <td style={{width: "50px" }} >{except.length - 1}</td>
-            <td style={{width: "50px" }} ></td>
-          </tr>
-          <tr>
-            <td>Acertos:</td>
-            <td> {rightCount}</td>
-            <td>
-              {except.length === 1
-                ? "-"
-                : Math.trunc((rightCount / (except.length - 1)) * 100)}
-              {except.length > 1 && "%"}
-            </td>
-          </tr>
-          <tr>
-            <td>Erros:</td>
-            <td> {wrongCount}</td>
-            <td>
-              {except.length === 1
-                ? "-"
-                : Math.trunc((wrongCount / (except.length - 1)) * 100)}
-              {except.length > 1 && "%"}
-            </td>
-          </tr>
-          <tr>
-            <td>Não conhecidos:</td>
-            <td> {unknownCount}</td>
-            <td>
-              {except.length === 1
-                ? "-"
-                : Math.trunc((unknownCount / (except.length - 1)) * 100)}
-              {except.length > 1 && "%"}
-            </td>
-          </tr>
-          {userId && (
+  const TableMobile = () => {
+    return (
+      <div className="text-start">
+        <table style={{ margin: "0 auto", tableLayout: "fixed" }}>
+          <tbody>
             <tr>
-            <td>Não mostre:</td>
-            <td> {forgetCount}</td>
-            <td>
-              {except.length === 1
-                ? "-"
-                : Math.trunc((forgetCount / (except.length - 1)) * 100)}
-              {except.length > 1 && "%"}
-            </td>
-          </tr>              
-          )}
+              <td style={{ width: "130px" }}>Mostrados: </td>
+              <td style={{ width: "50px" }}>
+                {"id" in mymemory ? (except.length ===0 ? 0 : except.length - 1) : except.length}
+              </td>
+              <td style={{ width: "50px" }}></td>
+            </tr>
+            <tr>
+              <td>Acertos:</td>
+              <td> {rightCount}</td>
+              <td>
+                {except.length === 1
+                  ? "-"
+                  : Math.trunc((rightCount / (except.length - 1)) * 100)}
+                {except.length > 1 && "%"}
+              </td>
+            </tr>
+            <tr>
+              <td>Erros:</td>
+              <td> {wrongCount}</td>
+              <td>
+                {except.length === 1
+                  ? "-"
+                  : Math.trunc((wrongCount / (except.length - 1)) * 100)}
+                {except.length > 1 && "%"}
+              </td>
+            </tr>
+            <tr>
+              <td>Não conhecidos:</td>
+              <td> {unknownCount}</td>
+              <td>
+                {except.length === 1
+                  ? "-"
+                  : Math.trunc((unknownCount / (except.length - 1)) * 100)}
+                {except.length > 1 && "%"}
+              </td>
+            </tr>
+            {userId && (
+              <tr>
+                <td>Não mostre:</td>
+                <td> {forgetCount}</td>
+                <td>
+                  {except.length === 1
+                    ? "-"
+                    : Math.trunc((forgetCount / (except.length - 1)) * 100)}
+                  {except.length > 1 && "%"}
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
-        </div>
-      )}
-      
+      </div>
+    );
+  };
+
   const ShowStatistics = () => {
     return (
       <div className="mt-3">
-        {size.width < 620 ? (<TableMobile />) : (
+        {size.width < 620 ? (
+          <TableMobile />
+        ) : (
           <table
             style={{ margin: "0 auto", tableLayout: "fixed", width: "600px" }}
           >
@@ -425,7 +449,7 @@ const Index = (props) => {
             </thead>
             <tbody>
               <tr>
-                <td>{except.length - 1}</td>
+                <td>{"id" in mymemory ? (except.length ===0 ? 0 : except.length - 1) : except.length}</td>
                 <td>{rightCount}</td>
                 <td>{wrongCount}</td>
                 <td>{unknownCount}</td>
@@ -567,14 +591,9 @@ export async function getServerSideProps(context) {
     console.log("index - getServerSideProps  session=", session);
     user = session;
   }
-  
+
   // get mymemory
-  let mm = await new MyMemory().findAny(
-    "0",
-    user?.id ? user.id : 0
-  );
-
-
+  let mm = await new MyMemory().findAny("0", user?.id ? user.id : 0);
 
   // console.log("index - getServerSideProps  fetch=", `${server}/api/mymemory/getnext`);
   // const res = await fetch(`${server}/api/mymemory/getnext`, {
@@ -586,7 +605,6 @@ export async function getServerSideProps(context) {
   //   headers: { "Content-Type": "application/json" },
   // });
   // const mymemory = await res.json();
-  
 
   return {
     props: { user, mymemory: JSON.parse(JSON.stringify(mm)) }, // will be passed to the page component as props

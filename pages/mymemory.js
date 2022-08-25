@@ -37,6 +37,7 @@ const MyMemory = (props) => {
   const [formMsgs, setFormMsgs] = useState(null);
   const router = useRouter();
   const idRef = useRef(null);
+  const name = useRef()
   const [showImg, SetShowImg] = useState(false);
   const [changed, setChanged] = useState(false);
   const [oldName, setOldName] = useState("");
@@ -178,9 +179,9 @@ const MyMemory = (props) => {
       setNewImage("");
       setMyFile({ selectedFile: null });
       setShowMsg(true);
+      setChanged(false);
       await sleep(3);
       setShowMsg(false);
-      setChanged(false);
     }
   };
 
@@ -246,6 +247,9 @@ const MyMemory = (props) => {
         return;
     }
     setMyMemory(newMyMemory);
+    setChanged(false)
+    document.getElementById("name").focus();
+    name.current.focus();
   };
 
   const goBack = (e) => {
@@ -412,7 +416,7 @@ const MyMemory = (props) => {
   };
 
   const MyMemoryContent = (
-    <div id="userDiv" className="container">
+    <div   className="container">
       <div className="row">
         <div className="col-lg-2 col-xs-0"></div>
         <div className="col-lg-8 col-xs-12">
@@ -439,6 +443,7 @@ const MyMemory = (props) => {
                 key="11"
                 type="text"
                 id="name"
+                ref={name}
                 value={mymemory.name}
                 required
                 maxLength="100"

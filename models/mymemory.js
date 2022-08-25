@@ -1,5 +1,6 @@
 // MyMemory object
 
+import { titleCase } from "../lib/common";
 import con from "../lib/dbconnection";
 
 module.exports = class MyMemory {
@@ -103,6 +104,7 @@ module.exports = class MyMemory {
       console.log("findAny res=", res);
       if (res.length > 0) {
         const mm = res[0];
+        mm.name=titleCase(mm.name)
         mm.totalMemories = totalMemories;
         return mm;
       }
