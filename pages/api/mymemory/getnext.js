@@ -2,13 +2,13 @@ import MyMemory from "../../../models/mymemory";
 
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/getnext  req.body=", req.body);
+//  console.log("/api/mymemory/getnext  req.body=", req.body);
 
   var mymemoryFound = await new MyMemory().findAny(
     req.body.except,
     req.body.user
   );
-  console.log("mymemory.getnext", mymemoryFound);
+//  console.log("mymemory.getnext", mymemoryFound);
 
   // was there any error saving?
   if (mymemoryFound === -1 || mymemoryFound?.error === -1) {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 //       mymemoryFound.user
 //     );
 //  }
-  console.log("mymemoryFound final", mymemoryFound);
+//  console.log("mymemoryFound final", mymemoryFound);
 
   res.status(200).send(mymemoryFound);
 }

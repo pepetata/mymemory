@@ -15,11 +15,11 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
     let pemData
     try {
       const pemFile = path.join(process.cwd(), "certificates");
-      console.log(
-        "======================= pemFile",
-        pemFile,
-        pemFile + path.sep + "privateKeyDKIM.pem"
-      );
+//      console.log(
+//        "======================= pemFile",
+//        pemFile,
+//        pemFile + path.sep + "privateKeyDKIM.pem"
+//      );
       pemData = await fs.readFile(
         pemFile + path.sep + "privateKeyDKIM.txt",
         "utf8"
@@ -58,7 +58,7 @@ function sendEmail(toEmail, subject, text, addFooter, cc) {
         '" width="200" style="display:block;"></a>';
     }
     msg += "</body></html>";
-    console.log(msg);
+//    console.log(msg);
 
     var mailOptions = {
       from: myEmail,

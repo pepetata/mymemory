@@ -38,7 +38,7 @@ const HeaderNav = (props) => {
   // console.log("HeaderNav", props);
   // console.log("HeaderNav userId", userId);
   useEffect(() => {
-    console.log("HeaderNav useEffect", userId, props,window.location.pathname);
+//    console.log("HeaderNav useEffect", userId, props,window.location.pathname);;
     import("bootstrap/dist/js/bootstrap.min");
   }, [props, userId]);
 
@@ -128,7 +128,7 @@ const HeaderNav = (props) => {
     })
       .then((res) => res.json())
       .then( async (json) => {
-        console.log(json);
+//        console.log(json);
         setUserId(0);
         router.reload(window.location.pathname)
         // router.push("/");

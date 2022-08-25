@@ -123,7 +123,7 @@ export async function getServerSideProps(context) {
   
   let error = true;
   let user = { error: false, confirmation: false };
-  console.log("confirmation - getServerSideProps", context.query);
+//  console.log("confirmation - getServerSideProps", context.query);
   const { id, email } = context.query;
 
   if (!id || !email || ! validator.isEmail(email)||!validator.isNumeric(id)) {
@@ -147,7 +147,7 @@ export async function getServerSideProps(context) {
   // // console.log("voltou", json);
   // user = json.user;
 
-  console.log('props=',  { props: { error, user } });
+//  console.log('props=',  { props: { error, user } });
   return { props: { error, user: JSON.parse(JSON.stringify(user)) } };
 }
 

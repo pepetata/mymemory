@@ -48,7 +48,7 @@ const validateBody = initMiddleware(
 
 const authenticate = (method, req, res) =>
   new Promise((resolve, reject) => {
-    console.log("/api/login authenticate");
+//    console.log("/api/login authenticate");
     passport.authenticate(method, { session: false }, (error, token) => {
       if (error) {
         reject(error);
@@ -74,18 +74,18 @@ export default nextConnect()
   // .use(passport.session())
   .post(async (req, res) => {
     try {
-      console.log("/api/login  ");
+//      console.log("/api/login  ");
       await validateBody(req, res);
       const errors = validationResult(req);
-      console.log("/apilogin  errors=", errors);
+//      console.log("/apilogin  errors=", errors);
       if (!errors.isEmpty()) {
         res.status(200).json({ errors: errors.array() });
         return;
       }
 
-      console.log("/api/login - nextConnect");
+//      console.log("/api/login - nextConnect");
       const user = await authenticate("local", req, res);
-      console.log("/api/login - nextConnect 2", user, "error" in user);
+//      console.log("/api/login - nextConnect 2", user, "error" in user);
 
       // check if user is ok to continue
       if ("errors" in user === true) {
@@ -97,7 +97,7 @@ export default nextConnect()
       const session = { ...user };
 
       await setLoginSession(res, session);
-      console.log("/api/login - nextConnect 3");
+//      console.log("/api/login - nextConnect 3");;
 
       res.status(200).send({ done: true });
     } catch (error) {

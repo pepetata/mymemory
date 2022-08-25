@@ -61,8 +61,8 @@ const pageContent = (
 
 export default A404;
 
-// getStaticProps : The page will be pre-rendered at build time
-export async function getStaticProps() {
-  return {props:{}}
- }
+// // getStaticProps : The page will be pre-rendered at build time
+// export async function getStaticProps() {
+//   return {props:{}}
+//  }
 

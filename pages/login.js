@@ -23,9 +23,9 @@ const Login = (props) => {
   const { needlogin , timeout, r} = router.query;
   // useUser()
 
-  useEffect(() => {
-    console.log("login - dentro do useEffect", needlogin, timeout, r, router.query);
-  });
+//  useEffect(() => {
+////    console.log("login - dentro do useEffect", needlogin, timeout, r, router.query);
+//  });
 
   const tooglePW = (event) => {
     event.preventDefault();
@@ -59,7 +59,7 @@ const Login = (props) => {
         headers: { "Content-Type": "application/json" },
       });
       const json = await res.json();
-      console.log(' login.js loginButton, json=', json)
+//      console.log(' login.js loginButton, json=', json)
 
       // console.log(json);
       if (json.errors || json.error) {

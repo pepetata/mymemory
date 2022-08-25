@@ -3,7 +3,7 @@ import { findUser } from '../../lib/user'
 
 export default async function user(req, res) {
   try {
-  console.log('/api/user')
+//  console.log('/api/user')
 
     const session = await getLoginSession(req)
     const user = (session && (await findUser(session))) ?? null

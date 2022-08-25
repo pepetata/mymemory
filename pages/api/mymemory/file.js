@@ -7,7 +7,7 @@ const path = require("path");
 
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/file  req.body=", req.body);
+//  console.log("/api/mymemory/file  req.body=", req.body);
   // await validateBody(req, res);
   // console.log("/api/mymemory/hide  2 ");
 
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   // }
   // await new MyMemory().hide(req.body.id, req.body.user);
   const result = await asyncParse(req);
-  console.log('------- result from asyncParse = ', result)
+//  console.log('------- result from asyncParse = ', result)
   res.status(200).json({ result });
 }
 
@@ -31,7 +31,7 @@ function read(filePath) {
   });
 
   readableStream.on("data", (chunk) => {
-    console.log(chunk);
+//    console.log(chunk);
   });
 }
 
@@ -66,14 +66,14 @@ const asyncParse = (req) =>
       const fileOK = 'myFile' in files
 
       if (! fileOK) {
-        console.log(' =============================================== file nao ok', files)
+//        console.log(' =============================================== file nao ok', files)
         resolve({ error: -1 });
         return;
       }
 
       // resize the image only if higher than 300px
       const metadata = await sharp(files.myFile.filepath).metadata();
-      console.log("metadata", metadata);
+//      console.log("metadata", metadata);
       let iWidth = null;
       let iHeight = null;
       if (metadata.height > 300) iHeight = 300;
@@ -100,11 +100,11 @@ const asyncParse = (req) =>
           console.log("sharp error = ", err);
           fs.unlink(files.myFile.filepath, (err) => {
             if (err) throw err;
-            console.log("Rename complete! ======= new file=", returnFileName);
+//            console.log("Rename complete! ======= new file=", returnFileName);
           });
           resolve({ file: returnFileName });
         });
-      console.log("fim do sharp");
+//      console.log("fim do sharp");
 
     });
   });

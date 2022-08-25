@@ -21,11 +21,11 @@ const validateBody = initMiddleware(
 );
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/delete  req.body=", req.body);
+//  console.log("/api/mymemory/delete  req.body=", req.body);
   await validateBody(req, res);
 
   const errors = validationResult(req);
-  console.log("/api/mymemory/delete  errors=", errors);
+//  console.log("/api/mymemory/delete  errors=", errors);
   if (!errors.isEmpty()) {
     res.status(200).json({ errors: errors.array() });
     return;
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
       value: req.body.data,
     };
     errors.errors.push(error);
-    console.log("erros = ", errors.array());
+//    console.log("erros = ", errors.array());
     return res.status(200).json({ errors: errors.array() });
   }
 

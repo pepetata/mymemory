@@ -257,7 +257,7 @@ export async function getServerSideProps(context) {
   const token = getTokenCookie(context.req);
   if (token) {
     const session = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults);
-    console.log("howworks - getServerSideProps  session=", session);
+//    console.log("howworks - getServerSideProps  session=", session);
     user = session;
   }
 

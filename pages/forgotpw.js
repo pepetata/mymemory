@@ -11,7 +11,7 @@ const Forgotpw = (props) => {
   const [user, setUser] = useState({email: props.email});
   const [showError, SetShowError] = useState({ display: "none" });
   const [formErrors, setFormErrors] = useState(null);
-console.log('Forgotpw', props)
+//console.log('Forgotpw', props)
 //   useEffect(() => {
 //     // console.log("forgotpw - dentro do useEffect");
 //     setUser({ ...user, email: localStorage.email });
@@ -57,7 +57,7 @@ console.log('Forgotpw', props)
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log('sendButton json=====================',json);
+//        console.log('sendButton json=====================',json);
         if (json.error) {
           displayErrorMsg(true, [json]);
         } else {
@@ -191,7 +191,7 @@ console.log('Forgotpw', props)
 
 export async function getServerSideProps(context) {
     const { email } = context.query;
-    console.log("forgotpw", context.query), email;
+//    console.log("forgotpw", context.query), email;
     return { props: { email } };
   }
 

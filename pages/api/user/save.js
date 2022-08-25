@@ -32,14 +32,14 @@ const validateBody = initMiddleware(
         // check pw length only if new user or when changing it
         .custom((value, { req }) => {
           var pw = value.toString();
-          console.log(
-            pw,
-            "id=",
-            req.body.data.id,
-            req.body.data.changePW,
-            "value",
-            typeof pw
-          );
+//          console.log(
+//            pw,
+//            "id=",
+//            req.body.data.id,
+//            req.body.data.changePW,
+//            "value",
+//            typeof pw
+//          );
           if (
             pw.length < 4 &&
             (req.body.data.id === "" ||
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
   await validateBody(req, res);
 
   const errors = validationResult(req);
-  console.log("/api/user/save  errors=", errors);
+//  console.log("/api/user/save  errors=", errors);
   if (!errors.isEmpty()) {
     res.status(200).json({ errors: errors.array() });
     return;
@@ -87,12 +87,12 @@ export default async function handler(req, res) {
   // data.changeEmail = req.body.data.changeEmail
   // data.changePW=req.body.data.changePW
 
-  console.log("x------------", req.body.data, user);
+//  console.log("x------------", req.body.data, user);
 
   // check if the email is already in db -- not if user exists and is not changing email
   if ((id && req.body.data.changeEmail) || !id) {
     const existingUser = await user.getByEmail(req.body.data.email);
-    console.log("existingUser", existingUser, "error" in existingUser);
+//    console.log("existingUser", existingUser, "error" in existingUser);
     if ("error" in existingUser === false) {
       var error = {
         param: "inputEmail",
@@ -100,7 +100,7 @@ export default async function handler(req, res) {
         value: req.body.data.email,
       };
       errors.errors.push(error);
-      console.log("erros = ", errors.array());
+//      console.log("erros = ", errors.array());
       return res.status(200).json({ errors: errors.array() });
     } else if (existingUser.error === -1) {
       var error = {
@@ -109,7 +109,7 @@ export default async function handler(req, res) {
         value: req.body.data.email,
       };
       errors.errors.push(error);
-      console.log("erros = ", errors.array());
+//      console.log("erros = ", errors.array());
       return res.status(200).json({ errors: errors.array() });
     }
   }
@@ -119,18 +119,18 @@ export default async function handler(req, res) {
     // update all data
     userId = await user.update();
     // update pw?
-    console.log(
-      "/api/user/save  req.body.data.changePW",
-      req.body.data.changePW,
-      req.body.data.changePW === true
-    );
+//    console.log(
+//      "/api/user/save  req.body.data.changePW",
+//      req.body.data.changePW,
+//      req.body.data.changePW === true
+//    );
     if (req.body.data.changePW === true) await user.updatePW();
     // session is the payload to save in the token, it may contain basic info about the user
     const session = { ...user };
     // update the cookie session to get the new data updated
     await setLoginSession(res, session);
   } else var userId = await user.save();
-  console.log("user.save", userId);
+//  console.log("user.save", userId);
 
   // was there any error saving?
   if (userId === -1 || userId?.error === -1) {
@@ -140,7 +140,7 @@ export default async function handler(req, res) {
       value: req.body.data.email,
     };
     errors.errors.push(error);
-    console.log("erros = ", errors.array());
+//    console.log("erros = ", errors.array());
     return res.status(200).json({ errors: errors.array() });
   }
   user.id = userId;
@@ -152,7 +152,7 @@ export default async function handler(req, res) {
   // mudou o email?
   if (req.body.data.changeEmail === true || !id) {
     //send email for confirmation --TODO
-    console.log("======== envinado email -------");
+//    console.log("======== envinado email -------");
   }
   res.status(200).send({ id: userId });
 }

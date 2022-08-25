@@ -97,7 +97,7 @@ function mmEmail(user, mm, req) {
 }
 
 function newMemoryEmail(user, mm, req) {
-  console.log("newMemoryEmail", user, mm);
+//  console.log("newMemoryEmail", user, mm);;
   const email = user.email;
 
   const subject = "Cadastro de Nova Memória no Sistema Memoria Test";
@@ -113,7 +113,7 @@ function newMemoryEmail(user, mm, req) {
 }
 
 function updateMemoryEmail(user, mm, req) {
-  console.log("updateMemoryEmail", user, mm);
+//  console.log("updateMemoryEmail", user, mm);
   const email = user.email;
 
   const subject = "Alteração de Memória no Sistema Memoria Test";

@@ -9,11 +9,11 @@ const validateBody = initMiddleware(
 );
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/name  req.body=", req.body);
+//  console.log("/api/mymemory/name  req.body=", req.body);
   await validateBody(req, res);
 
   const errors = validationResult(req);
-  console.log("/api/mymemory/name  errors=", errors);
+//  console.log("/api/mymemory/name  errors=", errors);
   if (!errors.isEmpty()) {
     res.status(200).json({ errors: errors.array() });
     return;
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   // console.log("mymemory.findName", mymemoryFound);
 
   const newMyMemory = {};
-  console.log("newMyMemory", newMyMemory);
+//  console.log("newMyMemory", newMyMemory);
   // was there any error saving?
   if (mymemoryFound === -1 || mymemoryFound?.error === -1) {
     mymemoryFound = newMyMemory;
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       mymemoryFound.user,
       mymemoryFound.picture
     );
-  console.log("mymemoryFound final", mymemoryFound);
+//  console.log("mymemoryFound final", mymemoryFound);
 
   res.status(200).send(mymemoryFound);
 }

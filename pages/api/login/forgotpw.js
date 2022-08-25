@@ -37,7 +37,7 @@ const createPW = () => {
 
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/forgotpw  req.body=", req.body);
+//  console.log("/api/mymemory/forgotpw  req.body=", req.body);
   // await validateBody(req, res);
   // res.status(200).send({ });
   const u = await new User().getByEmail(req.body.email);
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     const newPW = createPW();
     let user = new User(u.id, u.full_name, u.nickname, u.email, newPW, u.accept_emails);
     user.update();
-    console.log('nova senha', newPW)
+//    console.log('nova senha', newPW)
     newPassword(user, req);
     res.end(JSON.stringify(''))
   } else res.end(JSON.stringify({error:1, msg:'O correio eletrônico informado não existe em nossos arquivos.'}))

@@ -41,16 +41,16 @@ module.exports = class User {
   }
 
   async getByEmailId(email, id) {
-    console.log("getByEmailId", email, id);
+//    console.log("getByEmailId", email, id);
     // need to be a promise so the result can be put to a var
-    console.log("chegou getByEmailId", email, id);
+//    console.log("chegou getByEmailId", email, id);
 
     try {
       const res = await con({
         query: "SELECT * FROM users WHERE id = ? AND email = ?",
         values: [id, email],
       });
-      console.log('getByEmailId res=',res)
+//      console.log('getByEmailId res=',res)
       if (res.length > 0) return res[0];
       else return { error: -1 };
     } catch (error) {
@@ -64,7 +64,7 @@ module.exports = class User {
   //  - error = 0 if not found
   //  - error = -1 if any error
   async getByEmail(email) {
-    console.log("user.getByEmail", email);
+//    console.log("user.getByEmail", email);
     try {
       const res = await con({
         query: "SELECT * FROM users WHERE email = ?",
@@ -84,7 +84,7 @@ module.exports = class User {
   //  - {error: -1} if any error
   async save() {
     const pw = await encriptPW(this.pw);
-    console.log("=======this = ", this);
+//    console.log("=======this = ", this);
 
     try {
       const res = await con({
@@ -99,7 +99,7 @@ module.exports = class User {
         ],
       });
       // console.log("save user res=", res);
-      console.log("user " + res.insertId + " added.", this.full_name, this.pw, pw);
+//      console.log("user " + res.insertId + " added.", this.full_name, this.pw, pw);
       // console.log('========================== valido?', await this.validatePassword({pw:pw},'aaaa' ))
       return res.insertId;
     } catch (error) {
@@ -122,7 +122,7 @@ module.exports = class User {
           this.id,
         ],
       });
-      console.log("user " + this.id + " updated.", this.full_name);
+//      console.log("user " + this.id + " updated.", this.full_name);
       return this.id;
     } catch (error) {
       console.log("User update error =", this.id, this.full_name);
@@ -137,7 +137,7 @@ module.exports = class User {
         query: "UPDATE users SET  `pw` = ?  WHERE id =?",
         values: [pw, this.id],
       });
-      console.log("user " + this.id + " pw updated.", this.full_name);
+//      console.log("user " + this.id + " pw updated.", this.full_name);
       return res.insertId;
     } catch (error) {
       console.log("user " + this.id + " : pw updated.", this.full_name);
@@ -151,7 +151,7 @@ module.exports = class User {
         query: "UPDATE users SET  `last_login` = now()  WHERE id =?",
         values: [id],
       });
-      console.log("setLastLogin res=", res);
+//      console.log("setLastLogin res=", res);
       if (res.length > 0) return res[0];
       else return { error: -1 };
     } catch (error) {
@@ -166,7 +166,7 @@ module.exports = class User {
         query: "INSERT INTO user_login (`user`,`loginDate`) VALUES (?,now())",
         values: [id],
       });
-      console.log("setLastLogin res 2=", res);
+//      console.log("setLastLogin res 2=", res);
       if (res.length > 0) return res[0];
       else return { error: -1 };
     } catch (error) {
@@ -183,7 +183,7 @@ module.exports = class User {
         query: "UPDATE users SET  `status` = '1' WHERE id =?",
         values: [id],
       });
-      console.log("user " + id + " confirmed email.");
+//      console.log("user " + id + " confirmed email.");
       return { error: -1 };
     } catch (error) {
       console.log("User confirm email error =", id);
@@ -193,7 +193,7 @@ module.exports = class User {
   }
 
   async validatePassword(user, inputPassword) {
-    console.log('validatePassword', user.pw, inputPassword, await bcrypt.compareSync(inputPassword, user?.pw))
+//    console.log('validatePassword', user.pw, inputPassword, await bcrypt.compareSync(inputPassword, user?.pw))
     return await bcrypt.compareSync(inputPassword, user?.pw);
   }
 };

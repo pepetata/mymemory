@@ -46,7 +46,7 @@ const MyMemory = (props) => {
     mymemory.picture ? mymemory.picture : ""
   );
 
-  console.log("MyMemory mymeory=", mymemory);
+//  console.log("MyMemory mymeory=", mymemory);
 
   useEffect(() => {
     if (!props.user?.id > 0) router.push("/login?needlogin=true&r=/mymemory");
@@ -105,7 +105,7 @@ const MyMemory = (props) => {
 
   const validateData = (mm) => {
     const errors = [];
-    console.log("validateData", mymemory, mm.name.trim() == "");
+//    console.log("validateData", mymemory, mm.name.trim() == "");
     if (mm.name.trim() == "") {
       errors.push({ msg: "Informe o nome da memória." });
     }
@@ -120,7 +120,7 @@ const MyMemory = (props) => {
         errors.push({ msg: "O endereço da referência não é válido." });
       }
 
-    console.log("formerrors", formErrors);
+//    console.log("formerrors", formErrors);
     if (errors.length) {
       setFormErrors(errors);
       SetShowError({ display: "block" });
@@ -131,7 +131,7 @@ const MyMemory = (props) => {
   };
 
   const saveMyMemory = async (event) => {
-    console.log("idRef.current.value   ====", idRef.current.value);
+//    console.log("idRef.current.value   ====", idRef.current.value);
     if (event) event.preventDefault();
     displayErrorMsg(false);
     setShowMsg(false);
@@ -154,8 +154,8 @@ const MyMemory = (props) => {
       headers: { "Content-Type": "application/json" },
     });
     const json = await res.json();
-    console.log("saveMyMemory json==================================", json);
-    console.log("idRef.current.value", idRef.current.value);
+//    console.log("saveMyMemory json==================================", json);
+//    console.log("idRef.current.value", idRef.current.value);
     if (json.errors) {
       setFormErrors(json.errors);
       SetShowError({ display: "block" });
@@ -186,7 +186,7 @@ const MyMemory = (props) => {
   };
 
   const deleteMyMemory = async (event) => {
-    console.log("deleteMyMemory   ====");
+//    console.log("deleteMyMemory   ====");
     if (event) event.preventDefault();
     displayErrorMsg(false);
     setShowMsg(false);
@@ -198,7 +198,7 @@ const MyMemory = (props) => {
       headers: { "Content-Type": "application/json" },
     });
     const json = await res.json();
-    console.log("deleteMyMemory json==================================", json);
+//    console.log("deleteMyMemory json==================================", json);
     if (json.errors) {
       setFormErrors(json.errors);
       SetShowError({ display: "block" });
@@ -217,7 +217,7 @@ const MyMemory = (props) => {
   };
 
   const findName = async (event) => {
-    console.log("findName", mymemory);
+//    console.log("findName", mymemory);
     // do not try to find if no change on name or empty
     if (mymemory.name === oldName && mymemory.name === "") return;
     setOldName = mymemory.name;
@@ -228,9 +228,9 @@ const MyMemory = (props) => {
       headers: { "Content-Type": "application/json" },
     });
     const json = await res.json();
-    console.log(json);
+//    console.log(json);
     if ("id" in json) {
-      console.log("achou a memoria", json);
+//      console.log("achou a memoria", json);
       setMyMemory(json);
       setNewImage(json.picture);
     }
@@ -241,7 +241,7 @@ const MyMemory = (props) => {
     if (changed) {
       if (
         !confirm(
-          "Você ainda não gravou suas últimas alterações. Deseja realmente começar outra memória?"
+          "Você ainda não gravou suas últimas alterações! Deseja realmente começar outra memória?"
         )
       )
         return;
@@ -262,7 +262,7 @@ const MyMemory = (props) => {
       )
         return;
     }
-    console.log("changed");
+//    console.log("changed");
     router.push("/");
   };
 
@@ -288,7 +288,7 @@ const MyMemory = (props) => {
 
   // On file upload (click the upload button)
   const onFileUpload = async (file) => {
-    console.log("onFileUpload  =myFile.selectedFile", myFile.selectedFile);
+//    console.log("onFileUpload  =myFile.selectedFile", myFile.selectedFile);
     // Create an object of formData
     const formData = new FormData();
     // formData.append("data", JSON.stringify(content));
@@ -308,10 +308,10 @@ const MyMemory = (props) => {
         // headers: { "Content-Type": "multipart/form-data" },
       });
       const json = await res.json();
-      console.log(
-        "onFileUpload res==========================",
-        json.result.file
-      );
+//      console.log(
+//        "onFileUpload res==========================",
+//        json.result.file
+//      );
       setNewImage(json.result.file);
       // if (json.errors) {
       //   setFormErrors(json.errors);
@@ -333,12 +333,12 @@ const MyMemory = (props) => {
       //   setChanged(false);
       // }
     } catch (error) {
-      console.log("onFileChange error", error);
+//      console.log("onFileChange error", error);
     }
   };
 
   const ShowPicture = () => {
-    console.log("mymemory.link", mymemory.link);
+//    console.log("mymemory.link", mymemory.link);
     if (mymemory.link == "") return "";
     else
       return (
@@ -370,12 +370,12 @@ const MyMemory = (props) => {
   };
 
   const ShowLocalPicture = () => {
-    console.log(
-      "ShowLocalPicture picture=",
-      mymemory.picture,
-      "newImage",
-      newImage
-    );
+//    console.log(
+//      "ShowLocalPicture picture=",
+//      mymemory.picture,
+//      "newImage",
+//      newImage
+//    );
     if (!mymemory.picture && !newImage) return "";
     else
       return (
@@ -521,8 +521,8 @@ const MyMemory = (props) => {
                 computador ou telefone celular.
               </div>
             </div>
-            {myFile.selectedFile &&
-              console.log("myFile.selectedFile", myFile.selectedFile)}
+{/* <!--            {myFile.selectedFile &&
+              console.log("myFile.selectedFile", myFile.selectedFile)}--> */}
 
             <ShowLocalPicture />
 
@@ -645,10 +645,10 @@ export async function getServerSideProps(context) {
   };
 
   const token = getTokenCookie(context.req);
-  console.log("index - getServerSideProps  token=", token);
+//  console.log("index - getServerSideProps  token=", token);
   if (token) {
     const session = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults);
-    console.log("index - getServerSideProps  session=", session);
+//    console.log("index - getServerSideProps  session=", session);
     user = session;
     user.agreement = true;
   }

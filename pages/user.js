@@ -866,10 +866,10 @@ export async function getServerSideProps(context) {
   };
 
   const token = getTokenCookie(context.req);
-  console.log("index - getServerSideProps  token=", token);
+//  console.log("index - getServerSideProps  token=", token);
   if (token) {
     const session = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults);
-    console.log("index - getServerSideProps  session=", session);
+//    console.log("index - getServerSideProps  session=", session);
     user = session;
     user.agreement = true;
   }

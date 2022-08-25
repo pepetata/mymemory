@@ -16,14 +16,14 @@ module.exports = class MyMemory {
   }
 
   async hide(id, user) {
-    console.log("=========hide");
+//    console.log("=========hide");
     try {
       const res = await con({
         query:
           "INSERT INTO hide (`user`,`memory`, `created`) VALUES (?,?,now())",
         values: [user, id],
       });
-      console.log("MyMemory " + id + " is hidden.");
+//      console.log("MyMemory " + id + " is hidden.");
       return this.id;
     } catch (error) {
       console.log("MyMemory hide error =", error);
@@ -32,13 +32,13 @@ module.exports = class MyMemory {
   }
 
   async findName(name, user) {
-    console.log("findName", name, user);
+//    console.log("findName", name, user);
     try {
       const res = await con({
         query: "SELECT * FROM mymemories WHERE name = ? AND user = ?",
         values: [name, user],
       });
-      console.log("findName res=", res);
+//      console.log("findName res=", res);
       if (res.length > 0) return res[0];
       else return { error: -1 };
     } catch (error) {
@@ -48,7 +48,7 @@ module.exports = class MyMemory {
   }
 
   async getTotalMemories(user, exceptArray) {
-    console.log("getTotalMemories", user, exceptArray);
+//    console.log("getTotalMemories", user, exceptArray);
     try {
       //SELECT count(*) AS total FROM mymemories WHERE ( private =0 OR (private IN (0,1) AND user=87)) AND id NOT IN (7)
       const sql =
@@ -63,7 +63,7 @@ module.exports = class MyMemory {
         query: sql,
         values: [exceptArray],
       });
-      console.log("getTotalMemories res=", res);
+//      console.log("getTotalMemories res=", res);
       return res[0].total;
     } catch (error) {
       console.log("MyMemory getTotalMemories error =", error);
@@ -76,17 +76,17 @@ module.exports = class MyMemory {
     // get the total number of memories to generate a random number
     const exceptArray = except.split(",");
     const totalMemories = await this.getTotalMemories(user, exceptArray);
-    console.log(
-      "findAny except=",
-      exceptArray,
-      "user=",
-      user,
-      "totalMemories",
-      totalMemories
-    );
+//    console.log(
+//      "findAny except=",
+//      exceptArray,
+//      "user=",
+//      user,
+//      "totalMemories",
+//      totalMemories
+//    );
     // get a random memory
     let offset = Math.trunc(Math.random() * (totalMemories - 1));
-    console.log("findAny offset=", offset);
+//    console.log("findAny offset=", offset);
 
     try {
       const sql =
@@ -101,7 +101,7 @@ module.exports = class MyMemory {
         query: sql,
         values: [exceptArray, offset],
       });
-      console.log("findAny res=", res);
+//      console.log("findAny res=", res);
       if (res.length > 0) {
         const mm = res[0];
         mm.name=titleCase(mm.name)
@@ -135,7 +135,7 @@ module.exports = class MyMemory {
         ],
       });
       // console.log("save MyMemory res=", res);
-      console.log("MyMemory " + res.insertId + " added.", this.name);
+//      console.log("MyMemory " + res.insertId + " added.", this.name);
       // console.log('========================== valido?', await this.validatePassword({pw:pw},'aaaa' ))
       return res.insertId;
     } catch (error) {
@@ -159,7 +159,7 @@ module.exports = class MyMemory {
           this.id,
         ],
       });
-      console.log("MyMemory " + this.id + " updated.", this.name);
+//      console.log("MyMemory " + this.id + " updated.", this.name);
       return this.id;
     } catch (error) {
       console.log("MyMemory update error =", this.id, this.name);
@@ -185,7 +185,7 @@ module.exports = class MyMemory {
         query: "DELETE FROM mymemories WHERE id =?",
         values: [id],
       });
-      console.log("MyMemory " + id + " deleted.");
+//      console.log("MyMemory " + id + " deleted.");
       return this.id;
     } catch (error) {
       console.log("MyMemory delete error =", id);

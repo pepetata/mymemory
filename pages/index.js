@@ -44,16 +44,16 @@ const Index = (props) => {
   const [userId] = useState(props.user?.id);
   const size = useWindowSize();
   const [viewTable, setViewTable] = useState(true);
-  console.log(
-    "Index user=",
-    user,
-    "mymemory=",
-    mymemory,
-    "except=",
-    except,
-    "userid",
-    userId
-  );
+  //  console.log(;
+  //    "Index user=",
+  //    user,
+  //    "mymemory=",
+  //    mymemory,
+  //    "except=",
+  //    except,
+  //    "userid",
+  //    userId
+  //  );
 
   // useEffect(() => {
   //   // Your code here
@@ -92,19 +92,19 @@ const Index = (props) => {
         return () => window.removeEventListener("resize", handleResize);
       }
     }, []); // Empty array ensures that effect is only run on mount
-    console.log("windowSize=", windowSize);
+    //    console.log("windowSize=", windowSize);
     // if (windowSize.width < 620) setViewTable(false)
     return windowSize;
   }
 
   const showResult = (e) => {
-    console.log("showResult ====", showName);
+    //    console.log("showResult ====", showName);
     setShowName(true);
     setShowButtons(true);
   };
 
   const incCounter = (counter) => {
-    console.log("incCounter", counter);
+    //    console.log("incCounter", counter);
     setShowName(false);
     // setShowButtons(false);
     setShowName(false);
@@ -139,7 +139,7 @@ const Index = (props) => {
         headers: { "Content-Type": "application/json" },
       });
       const json = await res.json();
-      console.log("getNext  json=", json);
+      //      console.log("getNext  json=", json);;
 
       setMyMemory(json);
       if (json.id) setExcept([...except, json.id]);
@@ -151,20 +151,20 @@ const Index = (props) => {
   };
 
   const startAgain = async () => {
-    console.log("startAgain");
+    //    console.log("startAgain");
     setExcept([]);
     setForgetCount(0);
     setRightCount(0);
     setUnknownCount(0);
     setWrongCount(0);
-    console.log("except=", except);
+    //    console.log("except=", except);
     getNext([]);
   };
 
   const hideMemory = async () => {
-    console.log("hideMemory");
+    //    console.log("hideMemory");
     if (!confirm("Tem certea que não quer mais ver esta memória?")) return;
-
+    incCounter("forget");
     try {
       const res = await fetch(`/api/mymemory/hide`, {
         method: "POST",
@@ -175,7 +175,7 @@ const Index = (props) => {
         headers: { "Content-Type": "application/json" },
       });
       const json = await res.json();
-      console.log(json);
+      //      console.log(json);
       getNext(except);
     } catch (error) {
       console.error("An unexpected error occurred:", error);
@@ -195,7 +195,7 @@ const Index = (props) => {
           <Image
             src={background}
             width={300}
-            height={300}
+            height={345}
             alt="background"
           ></Image>
         )}
@@ -268,54 +268,54 @@ const Index = (props) => {
   };
 
   const ShowResult = () => {
-    console.log("ShowResult", showName);
+    //    console.log("ShowResult", showName);
     return (
-      <div>
-        <button
-          type="button"
-          className="btn btn-warning otbutton"
-          onClick={showResult}
-          title="Clique para mostrar mostrar o nome e os botões para indicar se acertou ou não"
-        >
-          Resposta
-        </button>
-        <input
-          id="showNameInput"
-          type="text"
-          value={mymemory.name}
-          readOnly
-          className={showName ? "bold" : "transparent"}
-          // style={{border: '0'}}
-        />
-        {mymemory.href && (
-          <Link href={mymemory.href}>
-            <a target="_blank">
-              <button
-                type="button"
-                className="btn btn-light otbutton"
-                title="Clique para ficar sabendo mais sobre a resposta."
-                // onClick={openHref}
-              >
-                Saiba Mais
-              </button>
-            </a>
-          </Link>
-        )}
-        <style global jsx>{`
-          #showNameInput {
-            background-color: ${variables.bgcolor};
-            border: 0;
-          }
-          .transparent {
-            color: transparent;
-          }
-        `}</style>
-      </div>
+      <>
+        <label id="showNameInput" className={showName ? "bold" : "transparent"}>
+          {mymemory.name}
+        </label>
+        <div>
+          {mymemory.id > 0 && (
+            <button
+              type="button"
+              className="btn btn-warning otbutton"
+              onClick={showResult}
+              title="Clique para mostrar mostrar o nome e os botões para indicar se acertou ou não"
+            >
+              Resposta
+            </button>
+          )}
+
+          {mymemory.href && (
+            <Link href={mymemory.href}>
+              <a target="_blank">
+                <button
+                  type="button"
+                  className="btn btn-light otbutton"
+                  title="Clique para ficar sabendo mais sobre a resposta."
+                  // onClick={openHref}
+                >
+                  Saiba Mais
+                </button>
+              </a>
+            </Link>
+          )}
+          <style global jsx>{`
+            #showNameInput {
+              background-color: ${variables.bgcolor};
+              border: 0;
+            }
+            .transparent {
+              color: transparent;
+            }
+          `}</style>
+        </div>
+      </>
     );
   };
 
   const ShowButtons = () => {
-    console.log("ShowResult", showName);
+    //    console.log("ShowResult", showName);
     return (
       <div className="mt-3">
         <button
@@ -377,7 +377,11 @@ const Index = (props) => {
             <tr>
               <td style={{ width: "130px" }}>Mostrados: </td>
               <td style={{ width: "50px" }}>
-                {"id" in mymemory ? (except.length ===0 ? 0 : except.length - 1) : except.length}
+                {"id" in mymemory
+                  ? except.length === 0
+                    ? 0
+                    : except.length - 1
+                  : except.length}
               </td>
               <td style={{ width: "50px" }}></td>
             </tr>
@@ -449,7 +453,13 @@ const Index = (props) => {
             </thead>
             <tbody>
               <tr>
-                <td>{"id" in mymemory ? (except.length ===0 ? 0 : except.length - 1) : except.length}</td>
+                <td>
+                  {"id" in mymemory
+                    ? except.length === 0
+                      ? 0
+                      : except.length - 1
+                    : except.length}
+                </td>
                 <td>{rightCount}</td>
                 <td>{wrongCount}</td>
                 <td>{unknownCount}</td>
@@ -501,7 +511,7 @@ const Index = (props) => {
   };
 
   const ShowMemory = () => {
-    console.log("ShowMemory viewTable=", viewTable);
+    //    console.log("ShowMemory viewTable=", viewTable);
     // setViewTable(size.width > 620)
     // incluir texto
     // api/robot para pegar mais
@@ -536,9 +546,10 @@ const Index = (props) => {
             </>
           )}
           {"id" in mymemory && (
-            <>
-              <ShowQuiz /> <ShowResult />
-            </>
+            <div id="quizAndResult" style={{height: "450px"}}>
+              <ShowQuiz />
+              <ShowResult />
+            </div>
           )}
           {viewTable && <ShowStatistics />}
           {"id" in mymemory && <ShowButtons />}
@@ -585,10 +596,10 @@ export async function getServerSideProps(context) {
   const TOKEN_SECRET = process.env.SECRET_COOKIE_PASSWORD;
   let user = {};
   const token = getTokenCookie(context.req);
-  console.log("index - getServerSideProps  token=", token);
+  //  console.log("index - getServerSideProps  token=", token);
   if (token) {
     const session = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults);
-    console.log("index - getServerSideProps  session=", session);
+    //    console.log("index - getServerSideProps  session=", session);
     user = session;
   }
 

@@ -14,12 +14,12 @@ const validateBody = initMiddleware(
 );
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/hide  req.body=", req.body);
+//  console.log("/api/mymemory/hide  req.body=", req.body);
   await validateBody(req, res);
-  console.log("/api/mymemory/hide  2 ");
+//  console.log("/api/mymemory/hide  2 ");
 
   const errors = validationResult(req);
-  console.log("/api/mymemory/save  errors=", errors);
+//  console.log("/api/mymemory/save  errors=", errors);
   if (!errors.isEmpty()) {
     res.status(200).json({ errors: errors.array() });
     return;

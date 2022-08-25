@@ -23,6 +23,12 @@ const Layout = (props) => {
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         ></meta>
+        {/* Connect your site to AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5050549310032121"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
       <main>
         <HeaderNav
@@ -31,9 +37,7 @@ const Layout = (props) => {
           group2={props.group2}
           group3={props.group3}
         />
-        <main>
-        {props.content}
-        </main>
+        <main>{props.content}</main>
         <Footer />
       </main>
     </>

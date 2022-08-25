@@ -55,11 +55,11 @@ const validateBody = initMiddleware(
 );
 
 export default async function handler(req, res) {
-  console.log("/api/mymemory/save  req.body=", req.body);
+//  console.log("/api/mymemory/save  req.body=", req.body);
   await validateBody(req, res);
 
   const errors = validationResult(req);
-  console.log("/api/mymemory/save  errors=", errors);
+//  console.log("/api/mymemory/save  errors=", errors);
   if (!errors.isEmpty()) {
     res.status(200).json({ errors: errors.array() });
     return;
@@ -84,10 +84,10 @@ export default async function handler(req, res) {
     // remove old picture from folder userFiles
     if (req.body.data.picture) {
       const removeFile = folder + req.body.data.picture;
-      console.log("removeFile", removeFile);
+//      console.log("removeFile", removeFile);
       unlink(removeFile, (err) => {
         if (err) throw err;
-        console.log("Delete complete!");
+//        console.log("Delete complete!");
       });
     }
   }
@@ -104,7 +104,7 @@ export default async function handler(req, res) {
     userFile
   );
 
-  console.log("x------------", req.body.data, mymemory);
+//  console.log("x------------", req.body.data, mymemory);
 
   // check if the email is already in db -- not if user exists and is not changing email
   // if (! id) {
