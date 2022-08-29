@@ -7,3 +7,4 @@
 - futuro - compartilhar memorias, entre amigos, familiares
 * definir lang = pt-BR
 - trocar http por https
+- aceitar cookies

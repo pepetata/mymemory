@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import Layout from "../components/Layout";
 import CancelButton from "../containers/CancelButton";
-import server from "../common/server";
 import SendButton from "../containers/SendButton";
 
 const Forgotpw = (props) => {
@@ -50,7 +49,7 @@ const Forgotpw = (props) => {
       return;
     }
     let dataUser = { email: user.email };
-    fetch(server + "/api/login/forgotpw", {
+    fetch("/api/login/forgotpw", {
       method: "POST",
       body: JSON.stringify(dataUser),
       headers: { "Content-Type": "application/json" },

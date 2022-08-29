@@ -7,7 +7,6 @@ import Layout from "../components/Layout";
 import entrar from "../images/entrar.png";
 import menu from "../images/menu.png";
 import SigninButton from "../containers/SigninButton";
-const server = process.env.SERVER
 
 const Confirmation = (props) => {
   const [errorNoParam, setErrorNoParam] = useState(props.error);
@@ -137,15 +136,6 @@ export async function getServerSideProps(context) {
       await new User().confirmEmail(id);
   }
 
-  // const res = await fetch(`${server}/api/user/confirmation`, {
-  //   method: "POST",
-  //   body: JSON.stringify({ email: email, id: id }),
-  //   headers: { "Content-Type": "application/json" },
-  // });
-  // const json = await res.json();
-
-  // // console.log("voltou", json);
-  // user = json.user;
 
 //  console.log('props=',  { props: { error, user } });
   return { props: { error, user: JSON.parse(JSON.stringify(user)) } };

@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Iron from "@hapi/iron";
+import CookieConsent from "react-cookie-consent";
 import { getTokenCookie } from "../lib/auth-cookies";
 import MyMemory from "../models/mymemory";
 
@@ -19,7 +20,6 @@ const animationSinger = { duration: 5000, easing: (t) => t };
 const animationArtist = { duration: 7000, easing: (t) => t };
 const animationSoccer = { duration: 6000, easing: (t) => t };
 const divStyle = { position: "relative", height: "300px" };
-const server = process.env.SERVER;
 const newMyMemory = {
   id: 0,
   name: "",
@@ -587,6 +587,22 @@ const Index = (props) => {
         group2={true}
         group3={true}
       />
+      <CookieConsent
+        location="bottom"
+        buttonText="Entendido e Aceito!!"
+        cookieName="MyIdolConsetCookie"
+        style={{ background: "#1f5088" }}
+        buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+        expires={150}
+      >
+        Este site usa cookies para garantir que você obtenha a melhor
+        experiência em nosso site.{" "}
+        <Link href="/privacy">
+          <a style={{ color: "white" }}>
+            <span>Saber mais</span>
+          </a>
+        </Link>
+      </CookieConsent>      
     </>
   );
 };
@@ -605,17 +621,6 @@ export async function getServerSideProps(context) {
 
   // get mymemory
   let mm = await new MyMemory().findAny("0", user?.id ? user.id : 0);
-
-  // console.log("index - getServerSideProps  fetch=", `${server}/api/mymemory/getnext`);
-  // const res = await fetch(`${server}/api/mymemory/getnext`, {
-  //   method: "POST",
-  //   body: JSON.stringify({
-  //     except: "0",
-  //     user: user?.id ? user.id : 0,
-  //   }),
-  //   headers: { "Content-Type": "application/json" },
-  // });
-  // const mymemory = await res.json();
 
   return {
     props: { user, mymemory: JSON.parse(JSON.stringify(mm)) }, // will be passed to the page component as props

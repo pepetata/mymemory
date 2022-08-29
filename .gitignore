@@ -37,3 +37,7 @@ next-env.d.ts
 /nbproject/private/
 /public/tempFiles/
 /public/userFiles/
+
+
+
+/.history

@@ -12,10 +12,11 @@
 # docker-compose up -d
 # docker-compose up --build
 
+
+
 # docker container list
 # docker stop CONTAINERID
-
-
+#
 # ===== remove docker containers
 # docker rm $(docker ps -qa --no-trunc --filter "status=exited")
 #
@@ -23,6 +24,7 @@
 # docker rmi $(docker images --filter "dangling=true" -q --no-trunc) -f
 # docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')
 #
+
 
 #
 #

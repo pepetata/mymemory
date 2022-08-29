@@ -13,7 +13,6 @@ import SaveButton from "../containers/SaveButton";
 import view30 from "../images/view30.png";
 import view_not30 from "../images/view_not30.png";
 import ReturnButton from "../containers/ReturnButton";
-const server = process.env.SERVER;
 
 const UserPage = (props) => {
   // const [cookies, setCookie] = useCookies(["midu", "midt"]);
