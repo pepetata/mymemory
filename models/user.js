@@ -70,7 +70,7 @@ module.exports = class User {
         query: "SELECT * FROM users WHERE email = ?",
         values: [email],
       });
-      console.log("getByEmail res=", res);
+      // console.log("getByEmail res=", res);
       if (res.length > 0) return res[0];
       else return { error: 0 };
     } catch (error) {

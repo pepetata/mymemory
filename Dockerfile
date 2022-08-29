@@ -5,9 +5,17 @@
 # sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
 # 
 #
+# cd C:\MyIdolApp\mymemory
+# ssh -i "../AWS_MyMemory.pem" ec2-user@ec2-54-175-193-172.compute-1.amazonaws.com
+#
 
 # docker build -t mymemory-docker .
-# docker run -p 3000:3000 mymemory-docker
+# docker run -p 3000:3000 mymemory-docker --name mymemory
+# docker run -p 3000:3000 mymemory-docker --name mymemory -d mymemory-bg   --> run in background
+# docker logs mymemory         --> only see the current logs
+# docker logs -f mymemory      --> see logs while happening --> ctrl C to stop seeing the log
+# docker stop mymemory
+# docker start mymemory
 #
 # docker-compose up -d
 # docker-compose up --build
@@ -16,6 +24,11 @@
 
 # docker container list
 # docker stop CONTAINERID
+#
+# docker ps
+# docker ps -a
+# docker images
+# 
 #
 # ===== remove docker containers
 # docker rm $(docker ps -qa --no-trunc --filter "status=exited")
@@ -36,9 +49,6 @@
 # sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 # Fix permissions
 # sudo chmod +x /usr/local/bin/docker-compose
-#
-# cd C:\MyIdolApp\mymemory
-# ssh -i "../AWS_MyMemory.pem" ec2-user@ec2-54-175-193-172.compute-1.amazonaws.com
 #
 #
 # para redirecionar a port 3000 para a porta 80: https://stackoverflow.com/questions/16573668/best-practices-when-running-node-js-with-port-80-ubuntu-linode
