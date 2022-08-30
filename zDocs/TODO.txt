@@ -6,5 +6,5 @@
 * email de nova memoria cadastrada
 - futuro - compartilhar memorias, entre amigos, familiares
 * definir lang = pt-BR
-- trocar http por https
-- aceitar cookies
+* trocar http por https
+* aceitar cookies

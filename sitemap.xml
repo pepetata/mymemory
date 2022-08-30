@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url>
+    <loc>https://www.memoriatest.online/</loc>
+    <changefreq>dayly</changefreq>
+</url>
+
+<url>
+    <loc>https://www.memoriatest.online/aboutus</loc>
+    <changefreq>monthly</changefreq>
+</url>
+
+<url>
+    <loc>https://www.memoriatest.online/howworks</loc>
+    <changefreq>monthly</changefreq>
+</url>
+
+
+<url>
+    <loc>https://www.memoriatest.online/howsignup</loc>
+    <changefreq>monthly</changefreq>
+</url>
+
+<url>
+    <loc>https://www.memoriatest.online/howsignin</loc>
+    <changefreq>monthly</changefreq>
+</url>
+
+<url>
+    <loc>https://www.memoriatest.online/howmemory</loc>
+    <changefreq>monthly</changefreq>
+</url>
+
+<url>
+    <loc>https://www.memoriatest.online/privacy</loc>
+    <changefreq>monthly</changefreq>
+</url>
+
+</urlset> 
+
