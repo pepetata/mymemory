@@ -10,8 +10,8 @@
 #
 
 # docker build -t mymemory-docker .
-# docker run -p 3000:3000 mymemory-docker --name mymemory
-# docker run -p 3000:3000 mymemory-docker --name mymemory -d mymemory-bg   --> run in background
+# nao esta ok --> docker run -p 3000:3000 mymemory-docker --name mymemory
+# docker run -p 3000:3000  --name mymemory -d mymemory-docker  --> run in background
 # docker logs mymemory         --> only see the current logs
 # docker logs -f mymemory      --> see logs while happening --> ctrl C to stop seeing the log
 # docker stop mymemory
@@ -20,10 +20,8 @@
 # docker-compose up -d
 # docker-compose up --build
 
-
-
 # docker container list
-# docker stop CONTAINERID
+# docker stop $(docker container list)
 #
 # docker ps
 # docker ps -a
@@ -31,6 +29,7 @@
 # 
 #
 # ===== remove docker containers
+# docker rm $(docker ps -qa --no-trunc)
 # docker rm $(docker ps -qa --no-trunc --filter "status=exited")
 #
 # ===== remove docker images

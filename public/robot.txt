@@ -3,4 +3,4 @@ Disallow: /user
 Disallow: /login
 Disallow: /mymemory
 
-Sitemap: http://www.ondetem.org/sitemap.xml
+Sitemap: https://www.memoriatest.online/sitemap.xml
